@@ -9,7 +9,7 @@
 
 	import { createApp } from 'vue';
 	
-	import App from "/assets/default/js/components/user/App.js";
+	import App from "/assets/default/js/vue/components/user/App.js";
 
 	const app = createApp({components: {App}});
 
