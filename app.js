@@ -51,6 +51,7 @@ function App() {
   })
   // fastify.register(require('@fastify/session'),{secret: 'MBuauWSewFHCdT3zHDbXJxWPPL4m5aMq74NMcRVaGVVf3CFS', cookie: {secure: false}});
 
+
   // load schema
   const {typeDefs,resolvers} = oGraphQL.schema()
 
