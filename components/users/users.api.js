@@ -19,6 +19,17 @@ const UsersAPI = {
 		url:'/'
 			
 	},
+	getUser:{
+		handler: async (request,reply) => {
+			
+			const oUser = await Controller.getUserById(request.params.id);
+
+			delete oUser.password;
+
+			return oUser;
+		},
+		url:'/users/:id'
+	}
 }
 module.exports = UsersAPI;
 

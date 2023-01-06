@@ -3,9 +3,7 @@ const BaseModel = require('../../abstracts/BaseModel.js');
 
 class User extends BaseModel {
 	constructor(result) {
-		
 		super(result);
-		this.state = 1;
 	}
 
 	static async getByUsername(username) {
