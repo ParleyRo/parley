@@ -7,7 +7,8 @@ module.exports = {
 	async getDefault(params) {
 			
 		const oData = {
-			test: true
+			message: 'From server',
+			data: JSON.stringify({user:{name: 'John', email: 'ceva@emai.com'}})
 		}
 
 		return oData

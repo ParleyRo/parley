@@ -20,14 +20,21 @@
 
 <body>
 
-	<%~ await includeFile(it.body, it) %>
-	
+  <script type="importmap">
+  {
+    "imports": {
+      "vue": "/assets/default/js/vue/vue.js"
+    }
+  }
+  </script>
+  
+  <%~ await includeFile(it.body, it) %>
 
-    <% if (it.js) { %>
-      <% it.js.forEach((js) => { %>
-        <script src="<%= js %>" async></script>
-      <% }) %>
-    <% } %>
+  <% if (it.js) { %>
+    <% it.js.forEach((js) => { %>
+      <script src="<%= js %>" async></script>
+    <% }) %>
+  <% } %>
 </body>
 
 </html>
