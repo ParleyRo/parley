@@ -23,7 +23,7 @@ export default {
 	async created(){
 		try {
 			
-			const dataResponse = await fetch('/users/1');
+			const dataResponse = await fetch('/users/2');
 			const data = await dataResponse.json();
 
 			if(data.exists === true){
