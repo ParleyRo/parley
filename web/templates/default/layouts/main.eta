@@ -23,11 +23,11 @@
   <script type="importmap">
   {
     "imports": {
-      "vue": "/assets/default/js/vue/vue.js"
+      "vue": "/assets/default/js/vue/vue.esm-browser.js"
     }
   }
   </script>
-  
+
   <%~ await includeFile(it.body, it) %>
 
   <% if (it.js) { %>
