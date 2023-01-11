@@ -27,6 +27,7 @@ module.exports = fp(async (fastify, opts) => {
 					} else if (user[key] !== Object(user[key]) || value !== true) if (user[key] !== value) throw {"error":"SCOPE_INVALID","message":`Unexpected value for ${key}: ${user[key]}`,'statusCode':401,'fail':scope.fail ?? err}
 				}
 		}
+		console.log(111)
 		try {
 			await request.jwtVerify()
 			/** check the scope of the route and see if the user has the required params  */
@@ -59,6 +60,8 @@ module.exports = fp(async (fastify, opts) => {
 			}
 		}
 	})
+
+
 	fastify.decorate("silentAuthenticate", async (request, reply) => {
 		try {
 			await request.jwtVerify()
