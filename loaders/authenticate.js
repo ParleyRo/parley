@@ -66,9 +66,9 @@ module.exports = fp(async (fastify, opts) => {
 				switch (failAuth.action) {
 					case "redirect":
 						if (request.headers['x-requested-with'] === 'XMLHttpRequest') return {
-							redirect: request.routeConfig.failAuth?.url ?? '/'
+							redirect: request.routeConfig.failAuth?.url ?? config.app.redirect.default
 						}
-						reply.redirect(request.routeConfig?.failAuth?.code ?? 301, request.routeConfig.failAuth?.url ?? '/')
+						reply.redirect(request.routeConfig?.failAuth?.code ?? 301, request.routeConfig.failAuth?.url ?? config.app.redirect.default)
 					break;
 					case "error":
 						reply.send(err)
@@ -79,9 +79,9 @@ module.exports = fp(async (fastify, opts) => {
 				}
 			} else {
 				if (request.headers['x-requested-with'] === 'XMLHttpRequest') return {
-					redirect: request.routeConfig.failAuth?.url ?? '/'
+					redirect: request.routeConfig.failAuth?.url ?? config.app.redirect.default
 				}
-				reply.redirect(301, '/')
+				reply.redirect(301, config.app.redirect.default)
 			}
 		}
 	})
@@ -204,9 +204,9 @@ module.exports = fp(async (fastify, opts) => {
 				switch (failAuth.action) {
 					case "redirect":
 						if (request.headers['x-requested-with'] === 'XMLHttpRequest') return {
-							redirect: failAuth?.url ?? '/'
+							redirect: failAuth?.url ?? config.app.redirect.default
 						}
-						reply.redirect(failAuth?.code ?? 301, failAuth?.url ?? '/')
+						reply.redirect(failAuth?.code ?? 301, failAuth?.url ?? config.app.redirect.default)
 					break;
 					case "error":
 						reply.send(err)
@@ -217,9 +217,9 @@ module.exports = fp(async (fastify, opts) => {
 				}
 			} else {
 				if (request.headers['x-requested-with'] === 'XMLHttpRequest') return {
-					redirect: failAuth?.url ?? '/'
+					redirect: failAuth?.url ?? config.app.redirect.default
 				}
-				reply.redirect(301, '/')
+				reply.redirect(301, config.app.redirect.default)
 			}
 		}
 	})

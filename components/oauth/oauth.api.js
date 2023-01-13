@@ -10,11 +10,15 @@ const OauthAPI = {
 
 			if(response.token){
 				const sJwt = Jwt.signer({user: {id: response.token}});
+
 				reply.setCookie('token', sJwt, {path: '/'});
+
+				reply.redirect('/home');
+
 			}
 
 		},
-		url:'/oauth/connect',
+		url:'/oauth/connect'
 		
 	},
 	getDisconnect: {
@@ -22,7 +26,7 @@ const OauthAPI = {
 
 			reply.clearCookie('token');
 
-			reply.redirect('/users/login',200);
+			reply.redirect('/users/login');
 		},
 		url:'/oauth/disconnect'
 	}
