@@ -1,24 +1,38 @@
 const fs = require('fs');
 const path = require('path');
+
 function getFuncAndMethod(funcName) {
-		const aSplitFuncName = funcName.replace(/([a-z0-9])([A-Z])/gu, '$1 $2').split(' ')
+		
+		const aSplitFuncName = funcName.replace(/([a-z0-9])([A-Z])/gu, '$1 $2').split(' ');
+
 		let sMethod = aSplitFuncName.shift();
 		const sFuncName = aSplitFuncName.join('');
 		let bPrivate = false;
+		
 		if (sMethod.charAt(0) === "_") {
 			sMethod = sMethod.substring(1);
 			bPrivate = true;
 		}
-		return {method:sMethod.toUpperCase(),func:sFuncName,private:bPrivate};
+		
+		return {
+			method:sMethod.toUpperCase(),
+			func:sFuncName,
+			private:bPrivate
+		};
 	}
 
 function getRouteObject(oPath,oFuncMethod,file,oRouteInit = {},apiSchema) {
+	
 	let oRoute = oRouteInit;
+
 	if (typeof oPath === "object") {
+		
 		oRoute = Object.assign(oRoute,oPath);
+		
 		if (typeof oRoute.method === "undefined") {
 			oRoute.method = oFuncMethod.method
 		}
+		
 		if (typeof oRoute.url === "undefined") {
 			oRoute.url = ['/',[file,oFuncMethod.func.toLowerCase()].join('/')].join('')
 		} else if (oRoute.url.startsWith("~//")) {
@@ -28,7 +42,7 @@ function getRouteObject(oPath,oFuncMethod,file,oRouteInit = {},apiSchema) {
 		}
  		
 		if ((typeof oRoute.schema !== "undefined") && (typeof oRoute.schema === "object")) {
-			const newSchema = {
+			let newSchema = {
 
 			}
 			for ([schemaName,schemaObject] of Object.entries(oRoute.schema)) {
@@ -62,33 +76,53 @@ function getRouteObject(oPath,oFuncMethod,file,oRouteInit = {},apiSchema) {
 					newSchema[schemaName] = schemaObject
 				}
 			}
+
 			oRoute.schema = newSchema;
 		}
-	
+
 		if (oFuncMethod.private) {
-			oRoute.preValidation = [globalThis.fastify.authenticate,globalThis.fastify.authorize]
+			oRoute.preValidation = [
+				globalThis.fastify.authenticate,
+				globalThis.fastify.authorize
+			]
 		}
+
 		if (oRoute?.config?.hasPermissions) {
 			if (typeof oRoute.config.hasPermissions === "boolean") {
-				oRoute.config.hasPermissions = [[file,oFuncMethod.func.toLowerCase(),oFuncMethod.method.toLowerCase()].filter((e) => e).join('.')]
+				
+				oRoute.config.hasPermissions = [
+					[
+						file,oFuncMethod.func.toLowerCase(),
+						oFuncMethod.method.toLowerCase()
+					].filter((e) => e).join('.')
+				]
 			}
 		}
 	} else {
-		oRoute = Object.assign({
-			method: oFuncMethod.method,
-			url: ['/',[file,oFuncMethod.func.toLowerCase()].join('/')].join(''),
-			handler: oPath
-		}, oRouteInit)
+
+		oRoute = Object.assign(
+			{
+				method: oFuncMethod.method,
+				url: ['/',[file,oFuncMethod.func.toLowerCase()].join('/')].join(''),
+				handler: oPath
+			},
+			oRouteInit
+		);
+
 		if (oFuncMethod.private) {
-			oRoute.preValidation = [globalThis.fastify.authenticate,globalThis.fastify.authorize]
+			oRoute.preValidation = [
+				globalThis.fastify.authenticate,
+				globalThis.fastify.authorize
+			]
 		}
 	}
 	return oRoute;
 }
 
 function handlers(fastify,opts,next) {
-	
+
 	const folders = fs.readdirSync(path.join(process.cwd(), 'components'));
+	
 	folders.forEach((folder) => {
 		
 		// Load API files
@@ -126,20 +160,24 @@ function handlers(fastify,opts,next) {
 			}
 
 			for (let i = 0; i < exportedFunctions.length; i++) {
+
 				if (exportedFunctions[i].startsWith("__")) continue;
+				
 				const oRoute = Object.assign({preValidation:fastify.silentAuthenticate},componentGlobalFunction);
 				const oPathHandlers = oApiComponent[exportedFunctions[i]]
 				const routePath = sApiNamespace == folder ? sApiNamespace : [sApiNamespace,folder].join("/");
+
 				if (Array.isArray(oPathHandlers)) {
 					for (const oPath of oPathHandlers) {
+					
 						fastify.route(getRouteObject(oPath,getFuncAndMethod(exportedFunctions[i]),routePath,oRoute,oApiSchema))
 					}
 				} else {
 					fastify.route(getRouteObject(oPathHandlers,getFuncAndMethod(exportedFunctions[i]),routePath,oRoute,oApiSchema));
 				}
 			}
-		})
-	})
+		});
+	});
 	next();
 }
 

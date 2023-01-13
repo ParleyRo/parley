@@ -1,13 +1,10 @@
 const path = require('path');
 const resolve = require('path').resolve;
-const mercurius = require('mercurius');
-const { makeExecutableSchema } = require('@graphql-tools/schema')
-const oGraphQL = require('./loaders/graphql');
-const { ErrorWithProps } = mercurius;
+
 const config = require('./config.js')
 const db = require('./libraries/database.js');
 const loadServices = require('./loaders/services')
-const loadSubscribers = require('./loaders/subscribers')
+
 const loadRPC = require('./loaders/rpc')
 
 const Fastify = require('fastify')
@@ -49,35 +46,25 @@ function App() {
     // options for parsing cookies
     parseOptions: {}     
   })
-  // fastify.register(require('@fastify/session'),{secret: 'MBuauWSewFHCdT3zHDbXJxWPPL4m5aMq74NMcRVaGVVf3CFS', cookie: {secure: false}});
 
   // load schema
-  const {typeDefs,resolvers} = oGraphQL.schema()
 
   fastify.register(require('./loaders/authenticate'));
+
   fastify.register(require('./loaders/api'));
-  if (resolvers.length) {
-    fastify.register(mercurius, {
-      graphiql:true,
-      schema: makeExecutableSchema({ typeDefs, resolvers }),
-      context: oGraphQL.context,
-      errorFormatter:oGraphQL.errorFormatter
-    })
-  }
+
   // create globals
   globalThis.fastify = fastify;
-  globalThis.ErrorWithProps = ErrorWithProps;
+
   // loading parts
   (async () => {
     await db.connect()
     loadServices();
-    loadSubscribers();
     loadRPC();
   })()
 
   return fastify
 }
-
 
 module.exports = App;
 

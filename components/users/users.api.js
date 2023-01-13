@@ -2,26 +2,24 @@ const Controller = require('./users.controller');
 const View = require('../../middlewares/View.js');
 
 const UsersAPI = {
-	getConnect: {
+	getLogin:{
 		handler: async (request,reply) => {
-			// reply.setCookie("foo","doo",{path:"/",httpOnly:true})
-			const code = request.query.code
 			
-			return await Controller.connectOauthAccount(code,request.params.provider);
-		}
-	},
-	get:{
-		handler: async (request,reply) => new View(request,reply)
-				//.addJs('accountsDashboard.js')
-				.send('users/home.eta',await Controller.getDefault({
-					auth: request.auth
-				})),
-		url:'/'
-			
+			if(request.auth != null){
+				return reply.redirect('/',200);
+			}
+
+			return new View(request,reply)
+			.send('users/login.eta',await Controller.getDefault({
+				auth: request.auth
+			}));
+
+		},
+		url:'/users/login'
 	},
 	getUser:{
 		handler: async (request,reply) => {
-			
+
 			const oUser = await Controller.getUserById(request.params.id);
 
 			delete oUser.password;
@@ -29,7 +27,9 @@ const UsersAPI = {
 			return oUser;
 		},
 		url:'/users/:id'
+		
 	}
+
 }
 module.exports = UsersAPI;
 
