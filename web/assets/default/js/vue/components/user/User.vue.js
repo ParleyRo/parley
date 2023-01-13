@@ -1,6 +1,7 @@
 export default {
 	template: `
 		<div class="container mt-6">
+		
 			<form 
 				method="post"
 				action="/oauth/connect/"
@@ -87,6 +88,10 @@ export default {
 				}),
 				headers: {'Content-Type': 'application/json'}
 			});
+ 
+			if(response.redirected && response.url){
+				window.location.href = response.url;
+			}
 			
 		}
 	}
