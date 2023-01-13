@@ -88,7 +88,7 @@ export default {
 				}),
 				headers: {'Content-Type': 'application/json'}
 			});
-
+ 
 			if(response.redirected && response.url){
 				window.location.href = response.url;
 			}
