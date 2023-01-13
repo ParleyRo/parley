@@ -1,15 +1,22 @@
 const fs = require('fs');
 const path = require('path');
+
 function getFuncAndMethod(funcName) {
+		
 		const aSplitFuncName = funcName.replace(/([a-z0-9])([A-Z])/gu, '$1 $2').split(' ')
 		let sMethod = aSplitFuncName.shift();
 		const sFuncName = aSplitFuncName.join('');
 		let bPrivate = false;
+		
 		if (sMethod.charAt(0) === "_") {
 			sMethod = sMethod.substring(1);
 			bPrivate = true;
 		}
-		return {method:sMethod.toUpperCase(),func:sFuncName,private:bPrivate};
+		
+		return {
+			method:sMethod.toUpperCase(),
+			func:sFuncName,private:bPrivate
+		};
 	}
 
 function getRouteObject(oPath,oFuncMethod,file,oRouteInit = {},apiSchema) {
@@ -110,7 +117,7 @@ function getRouteObject(oPath,oFuncMethod,file,oRouteInit = {},apiSchema) {
 }
 
 function handlers(fastify,opts,next) {
-	
+
 	const folders = fs.readdirSync(path.join(process.cwd(), 'components'));
 	
 	folders.forEach((folder) => {
