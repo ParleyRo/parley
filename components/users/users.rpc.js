@@ -7,6 +7,7 @@ function handlers(namespace) {
 	.register('createUser', async (objValue) => await Controller.createUser(objValue))
 	.register('getUserByUsername', async (username) => await Controller.getUserByUsername(username))
 	.register('getUserById', async (id) => await Controller.getUserById(id))
+	.register('getUserByLogin', async (username,password) => await Controller.getUserByLogin(username,password))
 }
 
 module.exports = handlers
