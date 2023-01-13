@@ -1,0 +1,17 @@
+
+<div id="app">
+	<app></app>
+</div>
+
+
+<script type="module">
+
+	import { createApp } from 'vue';
+	
+	import App from "/assets/default/js/vue/components/user/User.vue.js";
+
+	const app = createApp({components: {App}});
+
+	app.mount('#app');
+
+</script>
