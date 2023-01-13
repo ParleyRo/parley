@@ -68,6 +68,7 @@ function getRouteObject(oPath,oFuncMethod,file,oRouteInit = {},apiSchema) {
 		if (oFuncMethod.private) {
 			oRoute.preValidation = [globalThis.fastify.authenticate,globalThis.fastify.authorize]
 		}
+
 		if (oRoute?.config?.hasPermissions) {
 			if (typeof oRoute.config.hasPermissions === "boolean") {
 				oRoute.config.hasPermissions = [[file,oFuncMethod.func.toLowerCase(),oFuncMethod.method.toLowerCase()].filter((e) => e).join('.')]
@@ -89,6 +90,7 @@ function getRouteObject(oPath,oFuncMethod,file,oRouteInit = {},apiSchema) {
 function handlers(fastify,opts,next) {
 	
 	const folders = fs.readdirSync(path.join(process.cwd(), 'components'));
+	
 	folders.forEach((folder) => {
 		
 		// Load API files
@@ -126,10 +128,13 @@ function handlers(fastify,opts,next) {
 			}
 
 			for (let i = 0; i < exportedFunctions.length; i++) {
+
 				if (exportedFunctions[i].startsWith("__")) continue;
+				
 				const oRoute = Object.assign({preValidation:fastify.silentAuthenticate},componentGlobalFunction);
 				const oPathHandlers = oApiComponent[exportedFunctions[i]]
 				const routePath = sApiNamespace == folder ? sApiNamespace : [sApiNamespace,folder].join("/");
+				
 				if (Array.isArray(oPathHandlers)) {
 					for (const oPath of oPathHandlers) {
 						fastify.route(getRouteObject(oPath,getFuncAndMethod(exportedFunctions[i]),routePath,oRoute,oApiSchema))

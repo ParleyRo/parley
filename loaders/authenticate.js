@@ -13,27 +13,48 @@ module.exports = fp(async (fastify, opts) => {
 	fastify.decorate("authenticate", async (request, reply) => { // eslint-disable-line
 		
 		function validateScope(scope, user, err = false) {
-			if (scope === Object(scope) && Boolean(scope) && scope.constructor === Object)
+			
+			if (scope === Object(scope) && Boolean(scope) && scope.constructor === Object){
+				
 				for (const [key, value] of Object.entries(scope)) {
+					
 					if (key.charAt(0) === "_") continue;
-					if (!user[key]) throw {"error":"SCOPE_INVALID","message":`Missing key: ${key}`,'statusCode':401,'fail':scope.fail ?? err}
+					
+					if (!user[key]){
+						throw {"error":"SCOPE_INVALID","message":`Missing key: ${key}`,'statusCode':401,'fail':scope.fail ?? err}
+					}
+					
 					if (value === Object(value) && Boolean(value) && value.constructor === Object) {
 						validateScope(value,user[key],scope.__fail ?? err)
 					} else if (Array.isArray(value)) {
+						
 						if (value.some((e) => e === Object(e))) {
 							for (const lValue of value) {
 								validateScope(lValue,user[key]);
 							}
-						} else if (!value.includes(user[key])) throw {"error":"SCOPE_INVALID","message":`Unexpected value for ${key}: ${user[key]}`,'statusCode':401,'fail':scope.fail ?? err}
-					} else if (user[key] !== Object(user[key]) || value !== true) if (user[key] !== value) throw {"error":"SCOPE_INVALID","message":`Unexpected value for ${key}: ${user[key]}`,'statusCode':401,'fail':scope.fail ?? err}
+						} else if (!value.includes(user[key])) {
+							throw {"error":"SCOPE_INVALID","message":`Unexpected value for ${key}: ${user[key]}`,'statusCode':401,'fail':scope.fail ?? err}
+						}
+
+					} else if (user[key] !== Object(user[key]) || value !== true) {
+
+						if (user[key] !== value) {
+							throw {"error":"SCOPE_INVALID","message":`Unexpected value for ${key}: ${user[key]}`,'statusCode':401,'fail':scope.fail ?? err}
+						}
+					}
 				}
+			}
 		}
 
 		try {
 			await request.jwtVerify()
 			/** check the scope of the route and see if the user has the required params  */
-			if (request.routeConfig.hasScope) validateScope(request.routeConfig.hasScope,request.auth)
+			if (request.routeConfig.hasScope) {
+				validateScope(request.routeConfig.hasScope,request.auth)
+			}
+
 		} catch (err) {
+		
 			if (request.routeConfig.failAuth) {
 				/** check if failAuth is just a string, we do not need action to just show the error page */
 				let failAuth = request.routeConfig.failAuth;
