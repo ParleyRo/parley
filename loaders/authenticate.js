@@ -11,6 +11,7 @@ module.exports = fp(async (fastify, opts) => {
 		}
 	})
 	fastify.decorate("authenticate", async (request, reply) => { // eslint-disable-line
+		
 		function validateScope(scope, user, err = false) {
 			if (scope === Object(scope) && Boolean(scope) && scope.constructor === Object)
 				for (const [key, value] of Object.entries(scope)) {
@@ -27,7 +28,7 @@ module.exports = fp(async (fastify, opts) => {
 					} else if (user[key] !== Object(user[key]) || value !== true) if (user[key] !== value) throw {"error":"SCOPE_INVALID","message":`Unexpected value for ${key}: ${user[key]}`,'statusCode':401,'fail':scope.fail ?? err}
 				}
 		}
-		console.log(111)
+
 		try {
 			await request.jwtVerify()
 			/** check the scope of the route and see if the user has the required params  */
@@ -72,16 +73,30 @@ module.exports = fp(async (fastify, opts) => {
 	fastify.decorate("authorize", async (request, reply) => { // eslint-disable-line
 		try {
 			if (request.routeConfig.hasScope?.admin) {
-				if (!request?.auth?.admin?.id) throw {"error":"USER_INVALID","message":`Missing user id`,'statusCode':401}
+				
+				if (!request?.auth?.admin?.id){
+					throw {"error":"USER_INVALID","message":`Missing user id`,'statusCode':401}
+				}
+				
 				/** require the admin user and check the permissions(?)  */
 				const user = await rpc.gods.getAdminById(request.auth.admin.id);
-				if (!user.exists) throw {"error":"USER_INVALID","message":`User not found`,'statusCode':401}
+				
+				if (!user.exists){
+					throw {"error":"USER_INVALID","message":`User not found`,'statusCode':401}
+				}
 				let arrScopes = [];
-				if (Array.isArray(request.routeConfig.hasScope.admin)) arrScopes = request.routeConfig.hasScope.admin
-				else arrScopes = [request.routeConfig.hasScope.admin];
+
+				if (Array.isArray(request.routeConfig.hasScope.admin)){
+					arrScopes = request.routeConfig.hasScope.admin
+				}else{
+					arrScopes = [request.routeConfig.hasScope.admin];
+				}
+
 				for (const element of arrScopes) {
 					if (typeof element !== "object") continue;
+					
 					const scope = Object.assign({ _state : [1] },element);
+					
 					for (const [key, value] of Object.entries(scope)) {
 						if (key.charAt(0) !== "_") continue;
 						if (key === "__fail") continue;
@@ -92,40 +107,76 @@ module.exports = fp(async (fastify, opts) => {
 						} else if (user.get(sParam) !== value) throw {"error":"SCOPE_INVALID","message":`Unexpected value for ${key}: ${user.get(sParam)}`,'statusCode':401,'fail':scope?.__fail ?? false}
 					}
 				}
-				if (request.sessionAuth) request.sessionAuth.admin = user;
-				else request.sessionAuth = {admin: user}
+				if (request.sessionAuth){
+					request.sessionAuth.admin = user;
+				}else{
+					request.sessionAuth = {admin: user}
+				}
 			}
+			
 			if (request.routeConfig.hasScope?.user) {
-				if (!request?.auth?.user?.id) throw {"error":"USER_INVALID","message":`Missing user id`,'statusCode':401}
+				
+				if (!request?.auth?.user?.id){
+					throw {"error":"USER_INVALID","message":`Missing user id`,'statusCode':401}
+				}
 				/** require the normal user and check the permissions(?)  */
+				
 				// const user = await rpc.call("users.getUserById",request.auth.user.id);
 				const user = await rpc.users.getUserById(request.auth.user.id);
-				if (!user.exists) throw {"error":"USER_INVALID","message":`User not found`,'statusCode':401}
+				
+				if (!user.exists){
+					throw {"error":"USER_INVALID","message":`User not found`,'statusCode':401}
+				}
+				
 				let arrScopes = [];
-				if (Array.isArray(request.routeConfig.hasScope.user)) arrScopes = request.routeConfig.hasScope.user
-				else arrScopes = [request.routeConfig.hasScope.user];
+				
+				if (Array.isArray(request.routeConfig.hasScope.user)){
+					arrScopes = request.routeConfig.hasScope.user
+				}else{
+					arrScopes = [request.routeConfig.hasScope.user];
+				}
+
 				for (const element of arrScopes) {
-				if (typeof element !== "object") continue;
+					
+					if (typeof element !== "object") continue;
+					
 					const scope = Object.assign({ _state : [0,1] },element);
+					
 					for (const [key, value] of Object.entries(scope)) {
+						
 						if (key.charAt(0) !== "_") continue;
 						if (key === "__fail") continue;
+						
 						const sParam = key.slice(1);
-						if (user.get(sParam) === null) throw {"error":"SCOPE_INVALID","message":`Missing key: ${key}`,'statusCode':401, 'fail':scope?.__fail ?? false}
+						
+						if (user.get(sParam) === null){
+							throw {"error":"SCOPE_INVALID","message":`Missing key: ${key}`,'statusCode':401, 'fail':scope?.__fail ?? false}
+						}
+						
 						if (Array.isArray(value)) {
-							if (!value.includes(user.get(sParam))) throw {"error":"SCOPE_INVALID","message":`Unexpected value for ${key}: ${user.get(sParam)}`,'statusCode':401,'fail':scope?.__fail ?? false}
-						} else if (user.get(sParam) !== value) throw {"error":"SCOPE_INVALID","message":`Unexpected value for ${key}: ${user.get(sParam)}`,'statusCode':401,'fail':scope?.__fail ?? false}
+							if (!value.includes(user.get(sParam))){
+								throw {"error":"SCOPE_INVALID","message":`Unexpected value for ${key}: ${user.get(sParam)}`,'statusCode':401,'fail':scope?.__fail ?? false}
+							}
+						} else if (user.get(sParam) !== value){
+							throw {"error":"SCOPE_INVALID","message":`Unexpected value for ${key}: ${user.get(sParam)}`,'statusCode':401,'fail':scope?.__fail ?? false}
+						} 
 					}
 				}
-				if (request.sessionAuth) request.sessionAuth.user = user;
-				else request.sessionAuth = {user: user}
+				if (request.sessionAuth){
+					request.sessionAuth.user = user;
+				}else{
+					request.sessionAuth = {user: user}
+				}
 			}
 		} catch (err) {
+			
 			let failAuth = err?.fail ? err?.fail : request.routeConfig.failAuth
+			
 			if (failAuth) {
 				/** check if failAuth is just a string, we do not need action to just show the error page */
 				if (typeof failAuth === "string")
-				failAuth = {action:failAuth}
+					failAuth = {action:failAuth}
+				
 				switch (failAuth.action) {
 					case "redirect":
 						if (request.headers['x-requested-with'] === 'XMLHttpRequest') return {

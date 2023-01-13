@@ -15,13 +15,13 @@ const UsersAPI = {
 			const oUser = await Controller.getUserById(request.params.id);
 
 			delete oUser.password;
-console.log(request.auth)
+
 			return oUser;
 		},
 		url:'/users/:id',
 		config: {
 			hasScope : {
-				user:true
+				user: true
 			}
 		}
 	}
