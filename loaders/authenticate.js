@@ -37,8 +37,11 @@ module.exports = fp(async (fastify, opts) => {
 			if (request.routeConfig.failAuth) {
 				/** check if failAuth is just a string, we do not need action to just show the error page */
 				let failAuth = request.routeConfig.failAuth;
+				
 				if (typeof request.routeConfig.failAuth === "string")
+				
 				failAuth = {action:request.routeConfig.failAuth}
+				
 				switch (failAuth.action) {
 					case "redirect":
 						if (request.headers['x-requested-with'] === 'XMLHttpRequest') return {
@@ -113,7 +116,7 @@ module.exports = fp(async (fastify, opts) => {
 					request.sessionAuth = {admin: user}
 				}
 			}
-			
+
 			if (request.routeConfig.hasScope?.user) {
 				
 				if (!request?.auth?.user?.id){
