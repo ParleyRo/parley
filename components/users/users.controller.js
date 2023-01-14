@@ -24,10 +24,18 @@ module.exports = {
 		return await User.getById(id);
 	},
 	async getUserByLogin(username,password) {
-		if (!username) throw {"error":"username-required","message":"Username is required"};
-		if (!password) throw {"error":"password-required","message":"Password is required"};
 		
-		return await User.getByUsername(username);
+		if (!username) return  {
+			"error":"username-required",
+			"message":"Username is required"
+		};
+
+		if (!password) return {
+			"error":"password-required",
+			"message":"Password is required"
+		};
+		
+		return await User.getByLogin(username,password);
 	},
 	async createUser(objValue = {}) {
 		

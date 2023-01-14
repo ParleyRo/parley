@@ -10,7 +10,11 @@ module.exports = {
 				token: oUser.id
 			};
 		}
-		return {"state":"failed"}
+
+		return {
+			error:"login-failed",
+			message: "We couldn't verify your credentials."
+		}
 	}
 
 }

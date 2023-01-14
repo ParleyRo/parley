@@ -1,7 +1,15 @@
 
 <div id="app">
 	<app></app>
-	Home
+
+		<section class="hero is-primary">
+			<div class="hero-body">
+				<p class="title">
+				Home
+				</p>
+				
+			</div>
+		</section>
 </div>
 
 

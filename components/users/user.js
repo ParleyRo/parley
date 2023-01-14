@@ -6,7 +6,17 @@ class User extends BaseModel {
 		super(result);
 	}
 
+	static async getByLogin(username,password) {
+		
+		if (!username) throw {"error":"bad-query","message":"username required"} 
+		if (!password) throw {"error":"bad-query","message":"password required"} 
+		const result = await db.getRow("SELECT * FROM users WHERE ((username = ?) OR (email = ?)) AND password = sha1(?)",[username,username,password]);
+		return new User(result);
+
+    }
+
 	static async getByUsername(username) {
+		
 		if (!username) throw {"error":"bad-query","message":"username required"} 
 		const result = await db.getRow("SELECT * FROM users WHERE username = ?",[username]);
 		return new User(result);

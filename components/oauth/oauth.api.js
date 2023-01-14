@@ -1,21 +1,23 @@
 const Controller = require('./oauth.controller');
-const Jwt = require('../../helpers/Jwt')
+const Jwt = require('../../helpers/Jwt');
 
 const OauthAPI = {
 
 	postConnect: {
 		handler: async (request,reply) => {
 
-			const response = await Controller.connectOauthAccount(request.body);
+			const oAuth = await Controller.connectOauthAccount(request.body);
 
-			if(response.token){
-				const sJwt = Jwt.signer({user: {id: response.token}});
+			if(oAuth.token){
+				const sJwt = Jwt.signer({user: {id: oAuth.token}});
 
 				reply.setCookie('token', sJwt, {path: '/'});
 
-				reply.redirect('/home');
+				return reply.redirect('/home');
 
 			}
+
+			return oAuth;
 
 		},
 		url:'/oauth/connect'
