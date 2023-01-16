@@ -17,7 +17,6 @@ function App() {
     maxParamLength: 300,
     trustProxy: true
   });
-  fastify.register(require('@fastify/swagger'), config.swagger);
   fastify.register(require('@fastify/formbody'))
   fastify.register(require('@fastify/multipart'), { attachFieldsToBody: true })
   fastify.register(require('@fastify/view'), {
