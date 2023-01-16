@@ -1,26 +1,11 @@
+<section class="hero is-primary">
 
-<div id="app">
-	<app></app>
+	<div class="hero-body">
 
-		<section class="hero is-primary">
-			<div class="hero-body">
-				<p class="title">
-				Home
-				</p>
-				
-			</div>
-		</section>
-</div>
-
-
-<% /* <script type="module">
-
-	import { createApp } from 'vue';
+		<p class="title">
+			Hello world
+		</p>
+		
+	</div>
 	
-	import App from "/assets/default/js/vue/components/user/User.vue.js";
-
-	const app = createApp({components: {App}});
-
-	app.mount('#app');
-
-</script> */ %>
+</section>
