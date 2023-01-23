@@ -6,7 +6,8 @@
 	
 	<title></title>
 	
-  <link rel="shortcut icon" href="/assets/default/img/favicon.png">
+  <link rel="shortcut" href="/assets/default/img/favicon.png">
+  <link rel="icon" href="/assets/default/img/favicon.ico">
 
 	<link rel="stylesheet" href="/assets/default/css/all.css">
 	<link rel="stylesheet" href="/assets/default/css/bulma.min.css">
