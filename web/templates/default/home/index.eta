@@ -1,11 +1,92 @@
-<section class="hero is-primary">
 
-	<div class="hero-body">
 
-		<p class="title">
-			Hello world
-		</p>
-		
-	</div>
+<div id="fire">
 	
-</section>
+	<section class="hero is-primary">
+
+		<div class="hero-body">
+
+			<p class="title">
+				
+			</p>
+			
+		</div>
+		
+	</section>
+
+	<div class="container">
+
+		<div class="columns">
+			<div class="column">
+
+				<div class="field">
+					<label>Diametru stiut(de pe tambur)</label>
+					<div class="control">
+						<input v-on:change="calculeaza" v-model="diametruStiut" class="input" type="text" placeholder="Diametru stiut(de pe tambur)">
+					</div>
+				</div>
+			</div>
+
+			<div class="column">
+				<div class="field">
+					<label>Lungime stiut(de pe tambur)</label>
+					<div class="control">
+						<input  v-on:change="calculeaza" v-model="lungimeStiut" class="input" type="text" placeholder="Lungime stiut(de pe tambur)">
+					</div>
+				</div>
+			</div>
+
+			<div class="column">
+				<div class="field">
+					<label>Diametru dorit</label>
+					<div class="control">
+						<input  v-on:change="calculeaza" v-model="diametruDorit" class="input" type="text" placeholder="Diametru dorit">
+					</div>
+				</div>
+
+			</div>
+
+			<div class="column">
+				<div class="field">
+					<label>Diametru dorit</label>
+					<div class="control">
+						<input  readonly class="input" :value="lungimeDorit" type="text" placeholder="Diametru dorit">
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+
+
+	</div>
+
+</div>
+
+
+<script type="module">
+
+	import { createApp } from 'vue';
+	
+	const app = createApp({
+		data() {
+			return {
+				diametruStiut: '',
+				lungimeStiut: '',
+				diametruDorit: '',
+				lungimeDorit: ''
+			}
+		},
+		methods:{
+			calculeaza: function(){
+			
+				this.lungimeDorit = this.diametruStiut * this.diametruStiut * this.lungimeStiut / (this.diametruDorit * this.diametruDorit) 
+			
+			}
+		}
+	})
+
+	app.mount('#fire');
+
+</script>
