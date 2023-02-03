@@ -6,10 +6,7 @@ const HomeAPI = {
 		handler: async (request,reply) => {
 			
 			return new View(request,reply)
-				.send('home/index.eta',await Controller.getDefault({
-					auth: request.auth
-				}));
-
+				.send('home/index.eta',await Controller.getDefault({}));
 		},
 		url:'/'
 	}

@@ -11,7 +11,8 @@ class View {
 		this.layout = `templates/default/layouts/main.eta` 
 		this.version = '1.0.1'
 		this.meta = {
-			title: ''
+			title: '',
+			hostname: req.hostname
 		}
 		if (this.req) {
 			this.meta = Object.assign(this.meta,{
