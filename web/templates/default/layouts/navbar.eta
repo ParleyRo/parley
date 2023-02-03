@@ -37,11 +37,11 @@
 
           <div class="navbar-dropdown is-boxed is-hoverable">
            
-		    <a href="http://<%= it.meta.hostname.replace(/:(\d*)\/?(.*)/g, ':3000') %>" class="navbar-item" target="_blank">
+		    <a href="http://<%= it.meta.hostname.replaceAll(/:(\d*)\/?(.*)/g, '') %>:3000" class="navbar-item" target="_blank">
               Eficienta everhour
             </a>
 
-			<a href="http://<%= it.meta.hostname.replace(/:(\d*)\/?(.*)/g, ':4001') %>" class="navbar-item" target="_blank">
+			<a href="http://<%= it.meta.hostname.replaceAll(/:(\d*)\/?(.*)/g, '') %>:4001" class="navbar-item" target="_blank">
               Invoice organizer
             </a>
           
