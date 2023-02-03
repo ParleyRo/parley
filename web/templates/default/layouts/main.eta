@@ -4,9 +4,8 @@
   <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	
-	<title></title>
+	<title>Parley - Cristian Pirloaga</title>
 	
-  <link rel="shortcut" href="/assets/default/img/favicon.png">
   <link rel="icon" href="/assets/default/img/favicon.ico">
 
 	<link rel="stylesheet" href="/assets/default/css/all.css">
@@ -34,7 +33,11 @@
 
   <%~ await includeFile('templates/default/layouts/navbar.eta', it) %>
   
-  <%~ await includeFile(it.body, it) %>
+  <section class="section is-medium">
+    <div class="container is-max-desktop">
+      <%~ await includeFile(it.body, it) %>
+    </div>
+  </section>
 
   <% if (it.js) { %>
     <% it.js.forEach((js) => { %>
