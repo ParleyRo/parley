@@ -1,9 +1,9 @@
 module.exports = {
 
-	async getDefault(params) {
+	async getDefault(oParams) {
 			
 		const oData = {
-			auth: params.auth,
+		
 		}
 
 		return oData

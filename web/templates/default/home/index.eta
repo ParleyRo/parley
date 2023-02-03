@@ -1,108 +1,23 @@
+<section class="hero is-primary mt-4">
 
+	<div class="hero-body">
 
-<div id="fire">
-	
-	<section class="section">
-	
-		<div class="container">
-
-			<div class="columns">
-				<div class="column">
-
-					<div class="field">
-						<label>Diametru stiut(de pe tambur)</label>
-						<div class="control">
-							<input v-on:keyup="calculeaza" v-model="diametruStiut" class="input" type="text" placeholder="Diametru stiut(de pe tambur)">
-						</div>
-					</div>
-				</div>
-
-				<div class="column">
-					<div class="field">
-						<label>Lungime stiut(de pe tambur)</label>
-						<div class="control">
-							<input  v-on:keyup="calculeaza" v-model="lungimeStiut" class="input" type="text" placeholder="Lungime stiut(de pe tambur)">
-						</div>
-					</div>
-				</div>
-
-				<div class="column">
-					<div class="field">
-						<label>Diametru dorit</label>
-						<div class="control">
-							<input  v-on:keyup="calculeaza" v-model="diametruDorit" class="input" type="text" placeholder="Diametru dorit">
-						</div>
-					</div>
-
-				</div>
+		<div class="content">
+			<div class="field">
+				<figure class="image is-128x128 mx-auto">
+					<img class="is-rounded" src="/assets/default/img/avatar.jpg">
+				</figure>
 			</div>
-			<div class="columns">
-				<div class="column is-one-third">
-					<div class="field">
-						<label class="has-text-info">Rezultat Lungime</label>
-						<div class="control">
-							<input readonly class="input has-text-info" :value="lungimeDorit" type="text" placeholder="Diametru dorit">
-						</div>
-					</div>
-				</div>
-			</div>
+			<p>I am a highly skilled web developer with 9 years of experience in the industry. My expertise spans a wide range of technologies, including <b>HTML, CSS, PHP, Laravel framework, JavaScript, Node, Vue.js, React, MySQL, MongoDB, Git</b>. I have honed my skills over the years to deliver high-quality and user-friendly web applications.</p>
 
+			<p>As a full-stack developer, I have extensive experience in both front-end and back-end development. I am particularly proficient in the <b>Laravel</b> framework, which I have used to build robust and scalable web applications. My expertise in database technologies such as <b>MySQL and MongoDB</b>, combined with my experience in <b>Git</b>, makes me confident in my ability to handle complex data storage and retrieval requirements.</p>
+
+			<p>I have a proven track record of delivering exceptional results, consistently meeting or exceeding client expectations. I am a team player and thrive in a collaborative environment, where I can work with others to achieve a common goal. My dedication to delivering high-quality results, combined with my passion for web development, sets me apart as a top performer in my field.</p>
+
+			<p>Throughout my career, I have developed and maintained a wide range of web applications, from e-commerce websites to internal and external applications. I have a deep understanding of web development principles and best practices, and I always strive to stay up-to-date with the latest technologies and trends in the industry.</p>
+
+			<p>In conclusion, I am a dedicated and talented web developer with a passion for delivering high-quality results. I am confident in my ability to bring value to any organization and am always eager to take on new challenges. I look forward to the opportunity to put my skills and experience to work for your organization, and to make a positive impact through my contributions.</p>
 		</div>
-
-	</section>
-
-
-	<section class="hero is-primary">
-
-		<div class="hero-body">
-
-			<div class="content">
-				<div class="field">
-					<figure class="image is-128x128 mx-auto">
-						<img class="is-rounded" src="/assets/default/img/avatar.jpg">
-					</figure>
-				</div>
-				<p>I am a highly skilled web developer with 9 years of experience in the industry. My expertise spans a wide range of technologies, including <b>HTML, CSS, PHP, Laravel framework, JavaScript, Node, Vue.js, React, MySQL, MongoDB, Git</b>. I have honed my skills over the years to deliver high-quality and user-friendly web applications.</p>
-
-				<p>As a full-stack developer, I have extensive experience in both front-end and back-end development. I am particularly proficient in the <b>Laravel</b> framework, which I have used to build robust and scalable web applications. My expertise in database technologies such as <b>MySQL and MongoDB</b>, combined with my experience in <b>Git</b>, makes me confident in my ability to handle complex data storage and retrieval requirements.</p>
-
-				<p>I have a proven track record of delivering exceptional results, consistently meeting or exceeding client expectations. I am a team player and thrive in a collaborative environment, where I can work with others to achieve a common goal. My dedication to delivering high-quality results, combined with my passion for web development, sets me apart as a top performer in my field.</p>
-
-				<p>Throughout my career, I have developed and maintained a wide range of web applications, from e-commerce websites to internal and external applications. I have a deep understanding of web development principles and best practices, and I always strive to stay up-to-date with the latest technologies and trends in the industry.</p>
-
-				<p>In conclusion, I am a dedicated and talented web developer with a passion for delivering high-quality results. I am confident in my ability to bring value to any organization and am always eager to take on new challenges. I look forward to the opportunity to put my skills and experience to work for your organization, and to make a positive impact through my contributions.</p>
-			</div>
-		</div>
-		
-	</section>
-
-</div>
-
-
-<script type="module">
-
-	import { createApp } from 'vue';
+	</div>
 	
-	const app = createApp({
-		data() {
-			return {
-				diametruStiut: '',
-				lungimeStiut: '',
-				diametruDorit: '',
-				lungimeDorit: ''
-			}
-		},
-		methods:{
-			calculeaza: function(){
-				if(!this.diametruDorit){
-					return;
-				}
-				this.lungimeDorit = this.diametruStiut * this.diametruStiut * this.lungimeStiut / (this.diametruDorit * this.diametruDorit) 
-			
-			}
-		}
-	})
-
-	app.mount('#fire');
-
-</script>
+</section>

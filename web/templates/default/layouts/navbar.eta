@@ -1,9 +1,83 @@
-<nav class="navbar is-transparent is-fixed-top" role="navigation" aria-label="main navigation">
-	<div class="container is-max-desktop">
-		<div class="navbar-brand">
-			<a class="navbar-item" href="/">
-				<img src="/assets/default/img/logo-inline.png"  height="100">
-			</a>
-		</div>
-	</div>
+<nav id="nav" class="navbar is-transparent is-fixed-top" role="navigation" aria-label="main navigation">
+  <div class="container is-max-desktop">
+
+    <div class="navbar-brand">
+      
+      <a class="navbar-item" href="/">
+        <img src="/assets/default/img/logo-inline.png" >
+      </a>
+
+      <a role="button" :class="{ 'is-active': isActive }" @click="toggleActive" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+
+    </div>
+
+    <div :class="{ 'is-active': isActive }" class="navbar-menu" id="navbarMenu">
+
+      <div class="navbar-start">
+
+        <div class="navbar-item has-dropdown is-hoverable">
+
+          <a class="navbar-link">Local Apps</a>
+
+          <div class="navbar-dropdown is-boxed is-hoverable">
+            <a href="/hobby/pescuit/lungimeFire" class="navbar-item <%= it.meta.url.path === '/hobby/pescuit/lungimeFire' ? 'is-active' : '' %>">
+              LungimeFire
+            </a>
+          
+          </div>
+        </div>
+
+		 <div class="navbar-item has-dropdown is-hoverable">
+
+          <a class="navbar-link">Subdomain Apps</a>
+
+          <div class="navbar-dropdown is-boxed is-hoverable">
+           
+		    <a href="http://<%= it.meta.hostname.replace(/:(\d*)\/?(.*)/g, ':3000') %>" class="navbar-item" target="_blank">
+              Eficienta everhour
+            </a>
+
+			<a href="http://<%= it.meta.hostname.replace(/:(\d*)\/?(.*)/g, ':4001') %>" class="navbar-item" target="_blank">
+              Invoice organizer
+            </a>
+          
+          </div>
+        </div>
+
+      </div>
+
+      <div class="navbar-end">
+
+    </div>
+
+  </div>
 </nav>
+<% console.log(it) %>
+<script type="module">
+
+	import { createApp } from 'vue';
+
+	const nav = createApp({
+
+    data() {
+
+		  return {
+        	isActive: false
+      }
+    },
+    methods: {
+
+      toggleActive(){
+        this.isActive = !this.isActive
+      }
+    
+    }
+
+  })
+  .mount('#nav');
+
+</script>
