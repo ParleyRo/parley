@@ -1,23 +1,113 @@
-<section class="hero is-primary mt-4">
+<section id="hero" class="hero is-primary mt-4">
 
 	<div class="hero-body">
 
+		<div class="select is-primary is-small">
+			<select v-on:change="changedLanguage" v-model="text.language">
+				<option value="en">English</option>
+				<option value="ro">Romanian</option>
+				<option value="it">Italian</option>
+				<option value="ja">Japanese</option>
+				<option value="hu">Hungarian</option>
+				<option value="fr">French</option>
+				<option value="bg">Bulgarian</option>
+				<option value="ar">Arabic</option>
+				<option value="zh">Chinese</option>
+				<option value="el">Greek</option>
+				<option value="ru">Russian</option>
+				<option value="es">Spanish</option>
+				<option value="sv">Swedish</option>
+				<option value="tr">Turkish</option>
+				<option value="uk">Ukrainian</option>
+			</select>
+		</div>
+		
 		<div class="content">
+			
+			<h3 class="title is-size-3 has-text-centered">About me</h3>
+
 			<div class="field">
 				<figure class="image is-128x128 mx-auto">
 					<img class="is-rounded" src="/assets/default/img/avatar.jpg">
 				</figure>
 			</div>
-			<p>I am a highly skilled web developer with 9 years of experience in the industry. My expertise spans a wide range of technologies, including <b>HTML, CSS, PHP, Laravel framework, JavaScript, Node, Vue.js, React, MySQL, MongoDB, Git</b>. I have honed my skills over the years to deliver high-quality and user-friendly web applications.</p>
 
-			<p>As a full-stack developer, I have extensive experience in both front-end and back-end development. I am particularly proficient in the <b>Laravel</b> framework, which I have used to build robust and scalable web applications. My expertise in database technologies such as <b>MySQL and MongoDB</b>, combined with my experience in <b>Git</b>, makes me confident in my ability to handle complex data storage and retrieval requirements.</p>
+			<progress v-if="isLoading" class="progress is-large is-primary" max="100">Loading...</progress>
 
-			<p>I have a proven track record of delivering exceptional results, consistently meeting or exceeding client expectations. I am a team player and thrive in a collaborative environment, where I can work with others to achieve a common goal. My dedication to delivering high-quality results, combined with my passion for web development, sets me apart as a top performer in my field.</p>
+			<p v-for="sText in text.list[text.language]">{{sText}}</p>
 
-			<p>Throughout my career, I have developed and maintained a wide range of web applications, from e-commerce websites to internal and external applications. I have a deep understanding of web development principles and best practices, and I always strive to stay up-to-date with the latest technologies and trends in the industry.</p>
-
-			<p>In conclusion, I am a dedicated and talented web developer with a passion for delivering high-quality results. I am confident in my ability to bring value to any organization and am always eager to take on new challenges. I look forward to the opportunity to put my skills and experience to work for your organization, and to make a positive impact through my contributions.</p>
 		</div>
 	</div>
 	
 </section>
+
+<script type="module">
+
+	import { createApp } from 'vue';
+	
+	const hero = createApp({
+		data() {
+			return {
+				isLoading: false,
+				text:{
+					language: 'en',
+					list: {
+						en: <%~ JSON.stringify(it.aTexts) %>
+					}
+				}
+			}
+		},
+		methods:{
+			changedLanguage: async function(){
+				
+				if(this.text.list[this.text.language] != null)
+					return;
+				
+				this.isLoading = true;
+				const response = await fetch('/translate',{
+					method: 'post',
+					body: JSON.stringify({
+						text: this.text.list.en,
+						toLanguage: this.text.language
+					}),
+					headers: {'Content-Type': 'application/json'}
+				});
+				
+				const data = await response.json();
+				
+				this.isLoading = false;
+
+				if(data.error){
+					this.errors['default'] = data.data.message;
+
+					return;
+				}
+
+				this.text.list[this.text.language] = data.data.text;
+				
+			}
+		}
+	})
+
+	hero.mount('#hero');
+
+</script>
+
+<footer class="footer">
+	
+  <div class="content has-text-centered">
+	<h3 class="title is-size-6 has-text-centered mb-1">You can find me here</h3>
+    <a href="https://www.linkedin.com/in/cristian-pirloaga-16404ab7/" target="_blank" class="is-size-2 has-text-link">
+		<span class="icon">
+			<i class="fab fa-linkedin"></i>
+		</span>
+    </a>
+	&nbsp;
+	<a href="https://www.facebook.com/pirloaga.cristian" target="_blank" class="is-size-2 has-text-link">
+		<span class="icon">
+			<i class="fab fa-facebook"></i>
+		</span>
+    </a>
+	
+  </div>
+</footer>

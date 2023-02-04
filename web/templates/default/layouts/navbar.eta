@@ -56,7 +56,7 @@
 
   </div>
 </nav>
-<% console.log(it) %>
+
 <script type="module">
 
 	import { createApp } from 'vue';
