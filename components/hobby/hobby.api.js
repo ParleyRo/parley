@@ -11,14 +11,14 @@ const HobbyAPI = {
 		},
 		url:'/hobby/pescuit/lungimeFire'
 	},
-	getPutereAruncareDinLBS: {
+	getPutereAruncareDinLbs: {
 		handler: async (request,reply) => {
 			
 			return new View(request,reply)
 				.send('hobby/pescuit/lbstograme/index.eta',await Controller.getDefault({}));
 
 		},
-		url:'/hobby/pescuit/puterearuncaredinlbs'
+		url:'/hobby/pescuit/putereAruncareDinLbs'
 	}
 
 }
