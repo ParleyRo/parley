@@ -27,7 +27,7 @@
             <a href="/hobby/pescuit/lungimeFire" class="navbar-item <%= it.meta.url.path === '/hobby/pescuit/lungimeFire' ? 'is-active' : '' %>">
               LungimeFire
             </a>
-            <a href="/hobby/pescuit/testCurburaToPutereAruncare" class="navbar-item <%= it.meta.url.path === '/hobby/pescuit/testCurburaToPutereAruncare' ? 'is-active' : '' %>">
+            <a href="/hobby/pescuit/puterearuncaredinlbs" class="navbar-item <%= it.meta.url.path === '/hobby/pescuit/puterearuncaredinlbs' ? 'is-active' : '' %>">
               Puetere aruncare din LBS
             </a>
           
