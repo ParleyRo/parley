@@ -1,0 +1,68 @@
+<div id="lanseta">
+	
+	<section class="section">
+	
+		<div class="container">
+
+			<div class="columns">
+
+				<div class="column is-half">
+
+					<div class="field">
+						<label>Test curbura de pe lanseta (TC) <small>(ex. 3.5lbs)</small></label>
+						<div class="control">
+							<input v-on:keyup="calculeaza" v-model="lbs" class="input" type="text" placeholder="ex. 3.5lbs">
+						</div>
+					</div>
+
+				</div>
+
+				<div class="column is-one-third">
+					<div class="field">
+						<label class="has-text-info">Putere aruncare optim</label>
+						<div class="control">
+							<input disabled readonly class="input has-text-info" :value="grame" type="text" placeholder="ex. 100g">
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+	</section>
+
+</div>
+
+
+<script type="module">
+
+	import { createApp } from 'vue';
+	
+	const app = createApp({
+		data() {
+			return {
+				lbs: '',
+				grame: '',
+				grameMin: '',
+				grameMax: '',
+				uncie: 28.35
+			}
+		},
+		methods:{
+			calculeaza: function(){
+				if(!this.lbs){
+					return;
+				}
+				const grame = Math.round(this.lbs * this.uncie);
+				const grame20Percent = Math.round(grame * 0.20);
+
+				this.grame = `${grame}g    (min: ${parseInt(grame - grame20Percent)}g - max: ${parseInt(grame + grame20Percent)}g)`;
+
+			
+			}
+		}
+	})
+
+	app.mount('#lanseta');
+
+</script>

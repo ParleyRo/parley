@@ -10,7 +10,7 @@
 					<div class="field">
 						<label>Diametru stiut(de pe tambur)</label>
 						<div class="control">
-							<input v-on:keyup="calculeaza" v-model="diametruStiut" class="input" type="text" placeholder="Diametru stiut(de pe tambur)">
+							<input v-on:keyup="calculeaza" v-model="diametruStiut" class="input" type="text" placeholder="ex. 0.33(33)">
 						</div>
 					</div>
 				</div>
@@ -19,7 +19,7 @@
 					<div class="field">
 						<label>Lungime stiut(de pe tambur)</label>
 						<div class="control">
-							<input  v-on:keyup="calculeaza" v-model="lungimeStiut" class="input" type="text" placeholder="Lungime stiut(de pe tambur)">
+							<input  v-on:keyup="calculeaza" v-model="lungimeStiut" class="input" type="text" placeholder="ex. 320">
 						</div>
 					</div>
 				</div>
@@ -28,7 +28,7 @@
 					<div class="field">
 						<label>Diametru dorit</label>
 						<div class="control">
-							<input  v-on:keyup="calculeaza" v-model="diametruDorit" class="input" type="text" placeholder="Diametru dorit">
+							<input  v-on:keyup="calculeaza" v-model="diametruDorit" class="input" type="text" placeholder="ex. 0.25(25)">
 						</div>
 					</div>
 
@@ -37,9 +37,9 @@
 			<div class="columns">
 				<div class="column is-one-third">
 					<div class="field">
-						<label class="has-text-info">Rezultat Lungime</label>
+						<label class="has-text-info">Lungime necesara aproximativ</label>
 						<div class="control">
-							<input readonly class="input has-text-info" :value="lungimeDorit" type="text" placeholder="Diametru dorit">
+							<input disabled readonly class="input has-text-info" :value="lungimeDorit" type="text" placeholder="ex. 557">
 						</div>
 					</div>
 				</div>
@@ -70,7 +70,7 @@
 				if(!this.diametruDorit){
 					return;
 				}
-				this.lungimeDorit = this.diametruStiut * this.diametruStiut * this.lungimeStiut / (this.diametruDorit * this.diametruDorit) 
+				this.lungimeDorit = parseInt(this.diametruStiut * this.diametruStiut * this.lungimeStiut / (this.diametruDorit * this.diametruDorit) )
 			
 			}
 		}
