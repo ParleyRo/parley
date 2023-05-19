@@ -30,6 +30,9 @@
             <a href="/hobby/pescuit/putereAruncareDinLbs" class="navbar-item <%= it.meta.url.path === '/hobby/pescuit/putereAruncareDinLbs' ? 'is-active' : '' %>">
               Puetere aruncare din LBS
             </a>
+            <a href="/hobby/math/regula3simpla" class="navbar-item <%= it.meta.url.path === '/hobby/math/regula3simpla' ? 'is-active' : '' %>">
+              Regula de 3 simpla
+            </a>
           
           </div>
         </div>
