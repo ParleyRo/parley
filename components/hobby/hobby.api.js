@@ -19,6 +19,15 @@ const HobbyAPI = {
 
 		},
 		url:'/hobby/pescuit/putereAruncareDinLbs'
+	},
+	getRegula3Simpla: {
+		handler: async (request,reply) => {
+			
+			return new View(request,reply)
+				.send('hobby/math/regula3simpla/index.eta',await Controller.getDefault({}));
+
+		},
+		url:'/hobby/math/regula3simpla'
 	}
 
 }
