@@ -5,14 +5,33 @@ module.exports = {
 	async getDefault(oParams) {
 		
 		const aTexts = [
-			`I am a highly experienced web developer with over 10 years in the field. My expertise includes technologies such as HTML, CSS, JavaScript, Vue.js, PHP, Laravel framework, Node.js, React, MySQL, MongoDB, Git, and many others. With a strong foundation in front-end and back-end development, I bring a unique blend of technical skills and creativity to every project.`,
-			`My passion for web development started early on, and it has only grown over the years. I have worked on a variety of projects, from simple websites to complex web applications, and I have consistently delivered high-quality results to my clients.`,
-			`I have a deep understanding of the latest web development trends and technologies, and I am always seeking new ways to improve my skills and stay ahead of the curve. I am a problem solver at heart, and I take great pride in delivering solutions that exceed my clients' expectations.`,
-			`Whether you are looking for a simple website, a complex web application, or anything in between, I am here to help. I offer a range of web development services, including custom web design and development, website maintenance, and more.`,
-			`If you are ready to take your web presence to the next level, I would love to hear from you. Contact me today to schedule a consultation and learn more about how I can help bring your vision to life.`
-		]
+			`Hey there, code aficionados! I'm not just your run-of-the-mill developer; I'm the proud captain of a code spaceship with over a decade of experience navigating the cosmic seas of software development. Buckle up and let's take a joyride through my tech universe:`,
 
-		//await rpc.translate.text(aTexts[0],'rddo')
+			`<b>Front-end Fiesta:</b>`,
+			`<ul>`,
+			`<li>HTML is my secret language for talking to web browsers.</li>`,
+			`<li>CSS is my artistic palette; I paint masterpieces with style.</li>`,
+			`<li>JavaScript? Well, that's my coffee – can't start the day without it!</li>`,
+			`<li>Vue.js and React are my dynamic duo, making user interfaces dance to the rhythm of the code.</li>`,
+			`</ul>`,
+			`<b>Back-end Banter:</b>`,
+			`<ul>`,
+			`<li>PHP is my trusty sidekick, handling server-side shenanigans for over 10 years.</li>`,
+			`<li>Laravel is like my code butler, ensuring everything runs smoother than a cat video on the internet.</li>`,
+			`<li>Node.js? It's where I tap into my superhero mode, using JavaScript to save the day on the server.</li>`,
+			`</ul>`,
+			`<b>Database Dazzle:</b>`,
+			`<ul>`,
+			`<li>MySQL is where I play Sherlock, solving mysteries in the world of relational databases.</li>`,
+			`<li>MongoDB is my flexible friend, embracing the chaos of non-relational data like a pro.</li>`,
+			`</ul>`,
+			`<b>Version Control Virtuoso:</b>`,
+			`<ul>`,
+			`<li>Git is my time machine, keeping track of all the twists and turns in the code saga for over a decade. Think of me as the code historian with a sense of humor.</li>`,
+			`</ul>`,
+			`So, if you're looking for a developer who doesn't just code but also brings a dash of wit to the table, you've found your match. Let's create some tech magic together – the fun way!`
+
+		]
 
 		const oData = {
 			aTexts: aTexts

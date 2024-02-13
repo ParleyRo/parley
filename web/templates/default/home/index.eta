@@ -34,7 +34,7 @@
 
 			<progress v-if="isLoading" class="progress is-large is-primary" max="100">Loading...</progress>
 
-			<p v-for="sText in text.list[text.language]">{{sText}}</p>
+			<p v-for="sText in text.list[text.language]" v-html="sText"></p>
 
 		</div>
 	</div>
