@@ -41,6 +41,25 @@
 	
 </section>
 
+<footer class="footer">
+	
+  <div class="content has-text-centered">
+	<h3 class="title is-size-6 has-text-centered mb-1">You can find me here</h3>
+    <a href="https://www.linkedin.com/in/cristian-pirloaga-16404ab7/" target="_blank" class="is-size-2 has-text-link">
+		<span class="icon">
+			<i class="fab fa-linkedin"></i>
+		</span>
+    </a>
+	&nbsp;
+	<a href="https://www.facebook.com/pirloaga.cristian" target="_blank" class="is-size-2 has-text-link">
+		<span class="icon">
+			<i class="fab fa-facebook"></i>
+		</span>
+    </a>
+	
+  </div>
+</footer>
+
 <script type="module">
 
 	import { createApp } from 'vue';
@@ -93,21 +112,4 @@
 
 </script>
 
-<footer class="footer">
-	
-  <div class="content has-text-centered">
-	<h3 class="title is-size-6 has-text-centered mb-1">You can find me here</h3>
-    <a href="https://www.linkedin.com/in/cristian-pirloaga-16404ab7/" target="_blank" class="is-size-2 has-text-link">
-		<span class="icon">
-			<i class="fab fa-linkedin"></i>
-		</span>
-    </a>
-	&nbsp;
-	<a href="https://www.facebook.com/pirloaga.cristian" target="_blank" class="is-size-2 has-text-link">
-		<span class="icon">
-			<i class="fab fa-facebook"></i>
-		</span>
-    </a>
-	
-  </div>
-</footer>
+

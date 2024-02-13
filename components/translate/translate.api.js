@@ -34,9 +34,7 @@ const TranslateAPI = {
 					}
 				}
 			}
-			
-			console.log(1,text[0],text, typeof text)
-			
+						
 			return {
 				state: 'failed',
 				data: null
