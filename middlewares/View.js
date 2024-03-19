@@ -1,3 +1,4 @@
+const config = require('../config.js');
 const rpc = require('./Rpc');
 const fs = require('fs');
 const { dirname } = require('path');
@@ -14,6 +15,8 @@ class View {
 			title: '',
 			hostname: req.hostname
 		}
+		this.subdomanins = config.subdomains;
+
 		if (this.req) {
 			this.meta = Object.assign(this.meta,{
 				url : {
@@ -144,6 +147,7 @@ class View {
 			this.layout,
 			{
 				...this.data,
+				subdomains: this.subdomanins,
 				...data,
 				meta: this.meta,
 				version: this.version,
