@@ -23,89 +23,66 @@
 
 <body>
 
-<script>
-	<% /* // Add an event listener to execute code when the DOM is fully loaded
-	document.addEventListener('DOMContentLoaded', function() {
-		// Set the Service-Worker-Allowed header
-		setServiceWorkerAllowedHeader('/');
-	});
+	<script>
+		
+		const publicVapidKey = 'BBgcwAZurSm_Gusak9ENTRW1iGvFqYj8eq5XNPDJkoWJ7GccgPNm76BuDDFgaVzUKKzl6Hqs6YixodQD-WitjSk';
 
-	// Function to set the Service-Worker-Allowed header
-	function setServiceWorkerAllowedHeader(scope) {
-		// Check if the browser supports fetch
-		if ('fetch' in window) {
-			// Fetch a resource from the current domain to trigger the service worker registration
-			fetch('/', { method: 'HEAD' }).then(function(response) {
-			// Check if the response headers can be modified
-			if (response.headers && response.headers.append) {
-				// Add the Service-Worker-Allowed header
-				response.headers.append('Service-Worker-Allowed', scope);
-			}
+		// Check for service worker
+		if ("serviceWorker" in navigator) {
+			send().catch(err => console.error(err));
+		}
+
+		async function send() {
+			// Register Service Worker
+			console.log("Registering service worker...");
+			const register = await navigator.serviceWorker.register("/assets/default/js/serviceWorkerNotification.js", {
+				scope: "/assets/default/js/"
 			});
+			console.log("Service Worker Registered...");
+
+			// Register Push
+			console.log("Registering Push...");
+			const subscription = await register.pushManager.subscribe({
+				userVisibleOnly: true,
+				applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
+			});
+			console.log("Push Registered...");
+
+			// Send Push Notification
+			console.log("Sending Push...");
+			await fetch("/subscribeNotification", {
+				method: "POST",
+				body: JSON.stringify(subscription),
+				headers: {
+				"content-type": "application/json"
+				}
+			});
+			console.log("Push Sent...");
 		}
-	} */ %>
-</script>
 
-<script>
-	
-	const publicVapidKey = 'BBgcwAZurSm_Gusak9ENTRW1iGvFqYj8eq5XNPDJkoWJ7GccgPNm76BuDDFgaVzUKKzl6Hqs6YixodQD-WitjSk';
+		function urlBase64ToUint8Array(base64String) {
+			const padding = "=".repeat((4 - base64String.length % 4) % 4);
+			const base64 = (base64String + padding)
+				.replace(/\-/g, "+")
+				.replace(/_/g, "/");
 
-	// Check for service worker
-	if ("serviceWorker" in navigator) {
-		send().catch(err => console.error(err));
-	}
+			const rawData = window.atob(base64);
+			const outputArray = new Uint8Array(rawData.length);
 
-	async function send() {
-		// Register Service Worker
-		console.log("Registering service worker...");
-		const register = await navigator.serviceWorker.register("/assets/default/js/serviceWorkerNotification.js", {
-			scope: "/assets/default/js/"
-		});
-		console.log("Service Worker Registered...");
-
-		// Register Push
-		console.log("Registering Push...");
-		const subscription = await register.pushManager.subscribe({
-			userVisibleOnly: true,
-			applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
-		});
-		console.log("Push Registered...");
-
-		// Send Push Notification
-		console.log("Sending Push...");
-		await fetch("/subscribe", {
-			method: "POST",
-			body: JSON.stringify(subscription),
-			headers: {
-			"content-type": "application/json"
+			for (let i = 0; i < rawData.length; ++i) {
+				outputArray[i] = rawData.charCodeAt(i);
 			}
-		});
-		console.log("Push Sent...");
-	}
 
-	function urlBase64ToUint8Array(base64String) {
-		const padding = "=".repeat((4 - base64String.length % 4) % 4);
-		const base64 = (base64String + padding)
-			.replace(/\-/g, "+")
-			.replace(/_/g, "/");
-
-		const rawData = window.atob(base64);
-		const outputArray = new Uint8Array(rawData.length);
-
-		for (let i = 0; i < rawData.length; ++i) {
-			outputArray[i] = rawData.charCodeAt(i);
+			return outputArray;
 		}
-
-		return outputArray;
-	}
-</script>
-  <script type="importmap">
-  {
-    "imports": {
-      "vue": "/assets/default/js/vue/vue.esm-browser.js"
-    }
-  }
-  </script>
+	</script>
+	<script type="importmap">
+		{
+			"imports": {
+			"vue": "/assets/default/js/vue/vue.esm-browser.js"
+			}
+		}
+	</script>
 
   <%~ await includeFile('templates/default/layouts/navbar.eta', it) %>
   
