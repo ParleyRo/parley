@@ -1,4 +1,5 @@
 const rpc = require('../../middlewares/Rpc');
+const db = require('../../libraries/database.js');
 
 module.exports = {
 
@@ -38,6 +39,11 @@ module.exports = {
 		}
 
 		return oData
+	},
+
+	async saveSubscribeNotificationData({ip,endpoint,auth,p256dh}){ 
+
+		await db.insert('subscribtionNotifications',{ip,endpoint,auth,p256dh});
 	}
 	
 }
