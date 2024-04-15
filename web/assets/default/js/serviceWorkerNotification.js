@@ -9,6 +9,7 @@ self.addEventListener('push',function(e){
     self.registration.showNotification(data.title, {
         body: data.body,
         icon: data.icon,
-        urgency: 'high' // Set priority to high
+        urgency: 'high', // Set priority to high,
+        requireInteraction: true // Set requireInteraction to true
     });
 });
