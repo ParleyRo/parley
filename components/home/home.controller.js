@@ -42,7 +42,10 @@ module.exports = {
 	},
 
 	async saveSubscribeNotificationData({ip,endpoint,auth,p256dh}){ 
-
+		
+		if(await db.getScalar('select count(*) as total from subscribtionNotifications where endpoint = ?',[endpoint],'total') > 0){
+			return ;
+		}
 		await db.insert('subscribtionNotifications',{ip,endpoint,auth,p256dh});
 	}
 	
