@@ -25,7 +25,7 @@ class Home {
         }
 
 		webpush.sendNotification(subscription, JSON.stringify(dataToSend))
-			.then(() => console.log('Push notification sent successfully'))
+			.then(() => console.log(`Push notification sent successfully to IP: ${subscriptionData.ip}`))
 			.catch(error => {
                 console.log(subscriptionData);
                 if(error.statusCode === 410){
