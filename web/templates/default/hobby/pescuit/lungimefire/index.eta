@@ -50,32 +50,3 @@
 	</section>
 
 </div>
-
-
-<script type="module">
-
-	import { createApp } from 'vue';
-	
-	const app = createApp({
-		data() {
-			return {
-				diametruStiut: '',
-				lungimeStiut: '',
-				diametruDorit: '',
-				lungimeDorit: ''
-			}
-		},
-		methods:{
-			calculeaza: function(){
-				if(!this.diametruDorit){
-					return;
-				}
-				this.lungimeDorit = parseInt(this.diametruStiut * this.diametruStiut * this.lungimeStiut / (this.diametruDorit * this.diametruDorit) )
-			
-			}
-		}
-	})
-
-	app.mount('#fire');
-
-</script>
