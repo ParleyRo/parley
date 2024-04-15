@@ -1,6 +1,8 @@
 const rpc = require('../../middlewares/Rpc');
 const db = require('../../libraries/database.js');
 
+const Home = require('./home.js');
+
 module.exports = {
 
 	async getDefault(oParams) {
@@ -47,6 +49,25 @@ module.exports = {
 			return ;
 		}
 		await db.insert('subscribtionNotifications',{ip,endpoint,auth,p256dh});
+	},
+
+	async sendNotifications({title,body,icon}){
+		
+		  const dataToSend = {
+			title: title,
+			body: body,
+			icon: icon
+		  };
+		  
+		  const aSubscriptions = await db.query('select * from subscribtionNotifications',[]);
+
+		  aSubscriptions.forEach(subscription => {
+			
+			  Home.sendPushNotification(subscription, dataToSend);
+		  });
+		
+
+
 	}
 	
 }

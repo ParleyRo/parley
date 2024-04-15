@@ -6,7 +6,7 @@
 	
 	<title>Parley - Cristian Pirloaga</title>
 	
-  <link rel="icon" href="/assets/default/img/favicon.ico">
+  	<link rel="icon" href="/assets/default/img/favicon.ico">
 
 	<link rel="stylesheet" href="/assets/default/css/all.css">
 	<link rel="stylesheet" href="/assets/default/css/bulma.min.css">

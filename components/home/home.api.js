@@ -18,7 +18,7 @@ const HomeAPI = {
 			const auth = request.body.keys.auth;
 			const p256dh = request.body.keys.p256dh;
 
-			Controller.saveSubscribeNotificationData({
+			await Controller.saveSubscribeNotificationData({
 				ip:ip,
 				endpoint:endpoint,
 				auth:auth,
@@ -26,7 +26,22 @@ const HomeAPI = {
 			});
 		},
 		url:'/subscribeNotification'
-	}
+	},
+	getSendNotifications: {
+		handler: async (request,reply) => {
+
+			const ip = request.params.title || 'poftim , mesajul tau este aici!';
+			const endpoint = request.params.body || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+			const icon = '/assets/default/img/favicon.ico';
+
+			await Controller.sendNotifications({
+				title:ip,
+				body:endpoint,
+				icon:icon
+			});
+		},
+		url:'/sendNotifications'
+	},
 
 }
 module.exports = HomeAPI;

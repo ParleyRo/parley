@@ -4,3 +4,4 @@ config.js
 package-lock.json
 .nyc_output
 .env
+.DS_Store
