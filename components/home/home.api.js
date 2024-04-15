@@ -32,8 +32,8 @@ const HomeAPI = {
 
 			const ip = request.query.title || 'poftim , mesajul tau este aici!';
 			const endpoint = request.query.body || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
-			const icon = request.hostname + '/assets/default/img/logo_large.png';
-			const image = request.hostname + '/assets/default/img/logo-inline.png';
+			const icon = request.protocol + '://' + request.hostname + '/assets/default/img/logo_large.png';
+			const image = request.protocol + '://' + request.hostname + '/assets/default/img/logo-inline.png';
 
 			await Controller.sendNotifications({
 				title:ip,
