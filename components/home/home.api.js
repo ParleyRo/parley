@@ -30,8 +30,8 @@ const HomeAPI = {
 	getSendNotifications: {
 		handler: async (request,reply) => {
 
-			const ip = request.params.title || 'poftim , mesajul tau este aici!';
-			const endpoint = request.params.body || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+			const ip = request.query.title || 'poftim , mesajul tau este aici!';
+			const endpoint = request.query.body || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
 			const icon = '/assets/default/img/favicon.ico';
 
 			await Controller.sendNotifications({
