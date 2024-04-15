@@ -8,6 +8,7 @@ self.addEventListener('push',function(e){
     
     self.registration.showNotification(data.title, {
         body: data.body,
-        icon: 'https://gods.skyprivate.local/images/domain/orig/favicon.ico?v=1'
+        icon: data.icon,
+        urgency: 'high' // Set priority to high
     });
 });
