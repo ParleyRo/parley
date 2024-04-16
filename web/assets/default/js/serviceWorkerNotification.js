@@ -24,8 +24,9 @@ self.addEventListener('push',function(e){
         icon: data.icon,
         image: data.image,
         urgency: 'very-high', // Set priority to high,
-        requireInteraction: true, // Set requireInteraction to true
-        renotify: !0,
+        requireInteraction: false, // Set requireInteraction to true
+        renotify: data.tag ? true : false,
+        tag: data.tag,
     });
 
 });
