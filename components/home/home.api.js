@@ -35,13 +35,18 @@ const HomeAPI = {
 			const icon = request.protocol + '://' + request.hostname + '/assets/default/img/logo_large.png';
 			const image = request.protocol + '://' + request.hostname + '/assets/default/img/logo-inline.png';
 			const tag = request.query.tag || null;
+			const requireInteraction = request.query.ri ? true : false;
+			const urgency = request.query.urgency || 'normal';
 
 			await Controller.sendNotifications({
 				title:ip,
 				body:endpoint,
 				icon:icon,
 				image:image,
-				tag:tag
+				tag:tag,
+				requireInteraction:requireInteraction,
+				urgency:urgency
+
 			});
 		},
 		url:'/sendNotifications'

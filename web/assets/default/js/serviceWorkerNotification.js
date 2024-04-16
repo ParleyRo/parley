@@ -23,10 +23,11 @@ self.addEventListener('push',function(e){
         body: data.body,
         icon: data.icon,
         image: data.image,
-        urgency: 'very-high', // Set priority to high,
-        requireInteraction: false, // Set requireInteraction to true
+        urgency: data.urgency, // Set priority to high,
+        requireInteraction: data.requireInteraction, // Set requireInteraction to true
         renotify: data.tag ? true : false,
         tag: data.tag,
+
     });
 
 });
