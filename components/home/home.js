@@ -26,7 +26,7 @@ class Home {
 
 		webpush.sendNotification(subscription, JSON.stringify(dataToSend))
 			.then((test) => {
-                console.log(test)
+                console.log('test',test)
                 Tracer.info(`Push notification sent successfully to IP: ${subscriptionData.ip}`);
             })
 			.catch(error => {
