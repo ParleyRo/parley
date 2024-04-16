@@ -1,5 +1,5 @@
-
 const db = require('../../libraries/database.js');
+const Tracer = require('tracer').colorConsole();
 const webpush = require('web-push');
 
 const vapidKeys = {
@@ -25,19 +25,22 @@ class Home {
         }
 
 		webpush.sendNotification(subscription, JSON.stringify(dataToSend))
-			.then(() => console.log(`Push notification sent successfully to IP: ${subscriptionData.ip}`))
+			.then((test) => {
+                console.log(test)
+                Tracer.info(`Push notification sent successfully to IP: ${subscriptionData.ip}`);
+            })
 			.catch(error => {
-                console.log(subscriptionData);
+
                 if(error.statusCode === 410){
                     
                     db.delete('subscribtionNotifications',{id: subscriptionData.id});
                     
-                    console.error(`Error sending push notification: Subscrition ID: ${subscriptionData.id} deleted !!!`);
+                    Tracer.warn(`Error sending push notification: Subscrition ID: ${subscriptionData.id} deleted !!!`);
 
                     return;
                 }
 
-                console.error('Error sending push notification:', error)
+                Tracer.error('Error sending push notification:', error);
             });
 	}
 

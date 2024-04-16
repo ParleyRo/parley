@@ -34,7 +34,7 @@ const HomeAPI = {
 			const endpoint = request.query.body || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
 			const icon = request.protocol + '://' + request.hostname + '/assets/default/img/logo_large.png';
 			const image = request.protocol + '://' + request.hostname + '/assets/default/img/logo-inline.png';
-
+console.log(1, image);
 			await Controller.sendNotifications({
 				title:ip,
 				body:endpoint,
