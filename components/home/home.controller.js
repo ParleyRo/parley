@@ -51,13 +51,14 @@ module.exports = {
 		await db.insert('subscribtionNotifications',{ip,endpoint,auth,p256dh});
 	},
 
-	async sendNotifications({title,body,icon,image}){
+	async sendNotifications({title,body,icon,image,tag}){
 		
 		  const dataToSend = {
 			title: title,
 			body: body,
 			icon: icon,
-			image: image
+			image: image,
+			tag: tag
 		  };
 		  
 		  const aSubscriptions = await db.query('select * from subscribtionNotifications',[]);
