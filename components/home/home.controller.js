@@ -1,5 +1,6 @@
 const rpc = require('../../middlewares/Rpc');
 const db = require('../../libraries/database.js');
+const common = require('../../helpers/Common.js');
 
 const Home = require('./home.js');
 
@@ -54,11 +55,12 @@ module.exports = {
 
 	async saveData({ip,details}){ 
 		
-		if(await db.getScalar('SELECT count(*) AS total FROM visitors WHERE ip = ? AND details = ?',[ip,details],'total') > 0){
-			db.update('visitors',{ip,details},{ip,details});
+		const hash = common.md5Hash(JSON.stringify({ip,details}));
+		if(await db.getScalar('SELECT count(*) AS total FROM visitors WHERE hash = ? ',[hash],'total') > 0){
+			db.update('visitors',{hash,ip,details},{hash});
 			return ;
 		}
-		await db.insert('visitors',{ip,details});
+		await db.insert('visitors',{hash,ip,details});
 	},
 
 	async sendNotifications({title,body,icon,image,tag,requireInteraction,urgency,badge,persistent,dir}){
