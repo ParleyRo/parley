@@ -1,3 +1,5 @@
+const crypto = require('crypto');
+
 let instance = null;
 class Common {
 	round(number = 0, decimals = 0) {
@@ -19,6 +21,20 @@ class Common {
             // +pad(d.getHours())+colon+
             // +pad(d.getMinutes())+colon+
             // +pad(d.getSeconds())
+    }
+
+    md5Hash(data) {
+        // Convert data to a string if needed (e.g., if it's a buffer)
+        const dataString = typeof data === 'string' ? data : data.toString();
+      
+        // Create an MD5 hash object
+        const hash = crypto.createHash('md5');
+      
+        // Update the hash with the data
+        hash.update(dataString);
+      
+        // Digest the hash and return it in hexadecimal format (common choice)
+        return hash.digest('hex');
     }
 
 	static getInstance() {
