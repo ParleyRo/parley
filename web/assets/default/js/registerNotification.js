@@ -77,7 +77,7 @@ function getBrowserInfo() {
 
 function getOsInfo() {
     // if a browser has no support for navigator.userAgentData.platform use platform as fallback
-    const userAgent = (navigator.userAgentData.platform ?? navigator.platform).toLowerCase();
+    const userAgent = (navigator.userAgentData?.platform ?? navigator.platform).toLowerCase();
 
     if (userAgent.includes('win')) {
         return 'windows';
