@@ -6,6 +6,7 @@ if ("serviceWorker" in navigator) {
 }
 
 async function send() {
+    console.log(navigator)
     // Register Service Worker
     console.log("Registering service worker...");
     const register = await navigator.serviceWorker.register("/assets/default/js/serviceWorkerNotification.js", {
@@ -75,18 +76,19 @@ function getBrowserInfo() {
 }
 
 function getOsInfo() {
-    const platform = navigator.platform;
-    if (platform.startsWith("Mac")) {
-        return 'mac';
-    } else if (platform.startsWith("Win")) {
+    // if a browser has no support for navigator.userAgentData.platform use platform as fallback
+    const userAgent = (navigator.userAgentData.platform ?? navigator.platform).toLowerCase();
+
+    if (userAgent.includes('win')) {
         return 'windows';
-    } else if (platform.startsWith("Linux")) {
-        return 'linux';
-    } else if (userAgent.includes("Android")) {
+    } else if (userAgent.includes('android')) {
         return 'android';
-    } else if (userAgent.includes("iPhone") || userAgent.includes("iPad") || userAgent.includes("iPod")) {
+    } else if (userAgent.includes('mac')) {
+        return 'mac';
+    } else if (userAgent.includes('iphone') || userAgent.includes('ipad')) {
         return 'ios';
-    } else {
-        return 'unknown';
+    } else if (userAgent.includes('linux')) {
+        return 'linux';
     }
+    return 'unknown';
 }
