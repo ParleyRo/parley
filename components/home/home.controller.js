@@ -54,7 +54,7 @@ module.exports = {
 
 	async saveData({ip,details}){ 
 		
-		if(await db.getScalar('SELECT count(*) AS total FROM subscribtionNotifications WHERE ip = ? AND details = ?',[ip,details],'total') > 0){
+		if(await db.getScalar('SELECT count(*) AS total FROM visitors WHERE ip = ? AND details = ?',[ip,details],'total') > 0){
 			db.update('visitors',{ip,details},{ip,details});
 			return ;
 		}
