@@ -55,10 +55,21 @@
         </div>
 
         <div class="field">
+            <label class="label">direction</label>
+            <div class="control">
+                <div class="select">
+                    <select v-model="dir">
+                        <option v-for="dir in ['ltr','auto','rtl']" :key="dir" :value="dir">{{ dir }}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="field">
             <div class="control">
                 <label class="checkbox">
                     <input v-model="requireInteraction" type="checkbox" :checked="requireInteraction">
-                    Require Interaction
+                    require Interaction
                 </label>
             </div>
         </div>
@@ -67,7 +78,7 @@
             <div class="control">
                 <label class="checkbox">
                     <input v-model="persistent" type="checkbox" :checked="persistent">
-                    Persistent
+                    persistent
                 </label>
             </div>
         </div>
@@ -96,7 +107,8 @@
                 image: "<%= it.data.image %>",
                 urgency: "<%= it.data.urgency %>",
                 requireInteraction: <%= it.data.requireInteraction %>,
-                persistent: <%= it.data.persistent %>
+                persistent: <%= it.data.persistent %>,
+                dir: "<%= it.data.dir %>"
 			}
 		},
 		methods:{
@@ -113,7 +125,8 @@
                     image: this.image,
                     urgency: this.urgency,
                     requireInteraction: this.requireInteraction,
-                    persistent: this.persistent
+                    persistent: this.persistent,
+                    dir: this.dir
                 };
 
                 const response = await fetch('/sendNotifications',{

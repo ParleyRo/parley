@@ -28,6 +28,7 @@ self.addEventListener('push',function(e){
         requireInteraction: data.requireInteraction, 
         persistent: data.persistent, 
         tag: data.tag,
+        dir: data.dir,
     });
 
 });
