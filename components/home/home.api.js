@@ -22,7 +22,8 @@ const HomeAPI = {
 			const details = {
 				browser: request.body.details.browser,
 				os: request.body.details.os,
-				isMobile: request.body.details.isMobile
+				isMobile: request.body.details.isMobile,
+				navigator: request.body.navigator
 			}
 			
 			Tracer.debug(request.body.navigator);
@@ -45,7 +46,8 @@ const HomeAPI = {
 			const details = {
 				browser: request.body.details.browser,
 				os: request.body.details.os,
-				isMobile: request.body.details.isMobile
+				isMobile: request.body.details.isMobile,
+				navigator: request.body.navigator
 			}
 			
 			Tracer.debug(request.body.navigator);
