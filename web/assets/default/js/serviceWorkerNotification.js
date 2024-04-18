@@ -22,12 +22,12 @@ self.addEventListener('push',function(e){
     self.registration.showNotification(data.title, {
         body: data.body,
         icon: data.icon,
+        badge: data.badge,
         image: data.image,
-        urgency: data.urgency, // Set priority to high,
-        requireInteraction: data.requireInteraction, // Set requireInteraction to true
-        renotify: data.tag ? true : false,
+        urgency: data.urgency, 
+        requireInteraction: data.requireInteraction, 
+        persistent: data.persistent, 
         tag: data.tag,
-
     });
 
 });
