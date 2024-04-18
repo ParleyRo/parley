@@ -14,15 +14,21 @@ const HomeAPI = {
 		handler: async (request,reply) => {
 
 			const ip = request.ip;
-			const endpoint = request.body.endpoint;
-			const auth = request.body.keys.auth;
-			const p256dh = request.body.keys.p256dh;
+			const endpoint = request.body.subscription.endpoint;
+			const auth = request.body.subscription.keys.auth;
+			const p256dh = request.body.subscription.keys.p256dh;
+
+			const details = {
+				browser: request.body.details.browser,
+				os: request.body.details.os
+			}
 
 			await Controller.saveSubscribeNotificationData({
 				ip:ip,
 				endpoint:endpoint,
 				auth:auth,
-				p256dh:p256dh
+				p256dh:p256dh,
+				details: JSON.stringify(details)
 			});
 		},
 		url:'/subscribeNotification'

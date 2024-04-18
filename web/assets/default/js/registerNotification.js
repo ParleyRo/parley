@@ -21,11 +21,19 @@ async function send() {
     });
     console.log("Push Registered...");
 
+    const browser = getBrowserInfo();
+    const os = getOsInfo();
     // Send Push Notification
     console.log("Sending Push...");
     await fetch("/subscribeNotification", {
         method: "POST",
-        body: JSON.stringify(subscription),
+        body: JSON.stringify({
+            subscription: subscription,
+            details: {
+                browser: browser,
+                os: os
+            }
+        }),
         headers: {
         "content-type": "application/json"
         }
@@ -47,4 +55,38 @@ function urlBase64ToUint8Array(base64String) {
     }
 
     return outputArray;
+}
+
+function getBrowserInfo() {
+
+    const userAgent = navigator.userAgent;
+
+    if (userAgent.includes("Chrome")) {
+        return 'chrome';
+    } else if (userAgent.includes("Firefox")) {
+        return 'firefox';
+    } else if (userAgent.includes("Safari")) {
+        return 'safari';
+    } else if (userAgent.includes("Opera")) {
+        return 'opera';
+    } else {
+        return 'unknown';
+    }
+}
+
+function getOsInfo() {
+    const platform = navigator.platform;
+    if (platform.startsWith("Mac")) {
+        return 'mac';
+    } else if (platform.startsWith("Win")) {
+        return 'windows';
+    } else if (platform.startsWith("Linux")) {
+        return 'linux';
+    } else if (userAgent.includes("Android")) {
+        return 'android';
+    } else if (userAgent.includes("iPhone") || userAgent.includes("iPad") || userAgent.includes("iPod")) {
+        return 'ios';
+    } else {
+        return 'unknown';
+    }
 }
