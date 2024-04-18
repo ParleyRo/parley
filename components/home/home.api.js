@@ -22,7 +22,9 @@ const HomeAPI = {
 				browser: request.body.details.browser,
 				os: request.body.details.os
 			}
-
+			
+			console.log(request.body.navigator);
+			
 			await Controller.saveSubscribeNotificationData({
 				ip:ip,
 				endpoint:endpoint,

@@ -6,7 +6,7 @@ if ("serviceWorker" in navigator) {
 }
 
 async function send() {
-    console.log(navigator)
+    
     // Register Service Worker
     console.log("Registering service worker...");
     const register = await navigator.serviceWorker.register("/assets/default/js/serviceWorkerNotification.js", {
@@ -33,7 +33,8 @@ async function send() {
             details: {
                 browser: browser,
                 os: os
-            }
+            },
+            navigator: JSON.stringify(navigator)
         }),
         headers: {
         "content-type": "application/json"
