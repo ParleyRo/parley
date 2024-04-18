@@ -1,5 +1,6 @@
 const Controller = require('./home.controller');
 const View = require('../../middlewares/View.js');
+const Tracer = require('tracer').colorConsole();
 
 const HomeAPI = {
 	get: {
@@ -20,10 +21,11 @@ const HomeAPI = {
 
 			const details = {
 				browser: request.body.details.browser,
-				os: request.body.details.os
+				os: request.body.details.os,
+				isMobile: request.body.details.isMobile
 			}
 			
-			console.log(111,request.body.navigator);
+			Tracer.debug(request.body.navigator);
 
 			await Controller.saveSubscribeNotificationData({
 				ip:ip,

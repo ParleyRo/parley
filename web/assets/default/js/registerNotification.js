@@ -24,6 +24,8 @@ async function send() {
 
     const browser = getBrowserInfo();
     const os = getOsInfo();
+    const isMobileDevice = isMobile();
+
     // Send Push Notification
     console.log("Sending Push...");
     await fetch("/subscribeNotification", {
@@ -32,11 +34,13 @@ async function send() {
             subscription: subscription,
             details: {
                 browser: browser,
-                os: os
+                os: os,
+                isMobile: isMobileDevice
             },
             navigator: JSON.stringify({
                 userAgent: navigator.userAgent,
-                platform: (navigator.userAgentData?.platform ?? navigator.platform)
+                platform: (navigator.userAgentData?.platform ?? navigator.platform),
+                isMobile: isMobileDevice
             })
         }),
         headers: {
@@ -62,17 +66,26 @@ function urlBase64ToUint8Array(base64String) {
     return outputArray;
 }
 
+function isMobile() {
+
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? true : false;
+
+}
 function getBrowserInfo() {
 
-    const userAgent = navigator.userAgent;
+    const userAgent = navigator.userAgent.toLowerCase();
 
-    if (userAgent.includes("Chrome")) {
+    if (userAgent.includes("edg")) {
+        return 'edge';
+    } else if (userAgent.includes("msie") || userAgent.includes("trident/")){
+        return 'ie';
+    } else if (userAgent.includes("chrome")) {
         return 'chrome';
-    } else if (userAgent.includes("Firefox")) {
+    } else if (userAgent.includes("firefox")) {
         return 'firefox';
-    } else if (userAgent.includes("Safari")) {
+    } else if (userAgent.includes("safari")) {
         return 'safari';
-    } else if (userAgent.includes("Opera")) {
+    } else if (userAgent.includes("opera")) {
         return 'opera';
     } else {
         return 'unknown';
