@@ -45,11 +45,20 @@ module.exports = {
 
 	async saveSubscribeNotificationData({ip,endpoint,auth,p256dh,details}){ 
 		
-		if(await db.getScalar('select count(*) as total from subscribtionNotifications where endpoint = ?',[endpoint],'total') > 0){
+		if(await db.getScalar('SELECT count(*) AS total FROM subscribtionNotifications WHERE endpoint = ?',[endpoint],'total') > 0){
 			db.update('subscribtionNotifications',{ip,endpoint,auth,p256dh,details},{endpoint});
 			return ;
 		}
 		await db.insert('subscribtionNotifications',{ip,endpoint,auth,p256dh,details});
+	},
+
+	async saveData({ip,details}){ 
+		
+		if(await db.getScalar('SELECT count(*) AS total FROM subscribtionNotifications WHERE ip = ? AND details = ?',[ip,details],'total') > 0){
+			db.update('visitors',{ip,details},{ip,details});
+			return ;
+		}
+		await db.insert('visitors',{ip,details});
 	},
 
 	async sendNotifications({title,body,icon,image,tag,requireInteraction,urgency,badge,persistent,dir}){
