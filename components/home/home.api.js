@@ -23,8 +23,8 @@ const HomeAPI = {
 				os: request.body.details.os
 			}
 			
-			console.log(request.body.navigator);
-			
+			console.log(111,request.body.navigator);
+
 			await Controller.saveSubscribeNotificationData({
 				ip:ip,
 				endpoint:endpoint,

@@ -34,7 +34,10 @@ async function send() {
                 browser: browser,
                 os: os
             },
-            navigator: JSON.stringify(navigator)
+            navigator: JSON.stringify({
+                userAgent: navigator.userAgent,
+                platform: (navigator.userAgentData?.platform ?? navigator.platform)
+            })
         }),
         headers: {
         "content-type": "application/json"
