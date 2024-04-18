@@ -51,26 +51,26 @@ module.exports = {
 		await db.insert('subscribtionNotifications',{ip,endpoint,auth,p256dh});
 	},
 
-	async sendNotifications({title,body,icon,image,tag,requireInteraction,urgency}){
+	async sendNotifications({title,body,icon,image,tag,requireInteraction,urgency,badge,persistent}){
 		
-		  const dataToSend = {
+		const dataToSend = {
 			title: title,
 			body: body,
 			icon: icon,
 			image: image,
+			badge: badge,
 			tag: tag,
 			requireInteraction: requireInteraction,
+			persistent: persistent,
 			urgency: urgency
-		  };
+		};
 		  
-		  const aSubscriptions = await db.query('select * from subscribtionNotifications',[]);
+		const aSubscriptions = await db.query('select * from subscribtionNotifications',[]);
 
-		  aSubscriptions.forEach(subscription => {
+		aSubscriptions.forEach(subscription => {
 			
-			  Home.sendPushNotification(subscription, dataToSend);
-		  });
-		
-
+			Home.sendPushNotification(subscription, dataToSend);
+		});
 
 	}
 	

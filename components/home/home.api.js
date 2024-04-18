@@ -29,25 +29,43 @@ const HomeAPI = {
 	},
 	getSendNotifications: {
 		handler: async (request,reply) => {
+			
+			const data = {
+				title: 'poftim , mesajul tau este aici!',
+				body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+				icon: request.protocol + '://' + request.hostname + '/assets/default/img/logo_large.png',
+				badge: request.protocol + '://' + request.hostname + '/assets/default/img/logo-inline.png',
+				image: request.protocol + '://' + request.hostname + '/assets/default/img/logo-inline.png',
+				tag: '',
+				requireInteraction: false,
+				persistent: true,
+				urgency: 'normal',
+			};
+			return new View(request,reply)
+				.send('home/notifications.eta', {data});
 
-			const ip = request.query.title || 'poftim , mesajul tau este aici!';
-			const endpoint = request.query.body || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
-			const icon = request.protocol + '://' + request.hostname + '/assets/default/img/logo_large.png';
-			const image = request.protocol + '://' + request.hostname + '/assets/default/img/logo-inline.png';
-			const tag = request.query.tag || null;
-			const requireInteraction = request.query.ri ? true : false;
-			const urgency = request.query.urgency || 'normal';
+		},
+		url:'/sendNotifications'
+	},
+	postSendNotifications: {
+		handler: async (request,reply) => {
 
-			await Controller.sendNotifications({
-				title:ip,
-				body:endpoint,
-				icon:icon,
-				image:image,
-				tag:tag,
-				requireInteraction:requireInteraction,
-				urgency:urgency
+			const data = {
+				title: request.body.title,
+				body: request.body.body,
+				icon: request.body.icon,
+				badge: request.body.badge,
+				image: request.body.image,
+				tag: request.body.tag,
+				requireInteraction: request.body.requireInteraction,
+				persistent: request.body.persistent,
+				urgency: request.body.urgency
 
-			});
+			};
+
+			//return data;
+			return await Controller.sendNotifications(data);
+
 		},
 		url:'/sendNotifications'
 	},
