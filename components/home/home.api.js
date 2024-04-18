@@ -40,6 +40,7 @@ const HomeAPI = {
 				requireInteraction: false,
 				persistent: true,
 				urgency: 'normal',
+				dir: 'auto',
 			};
 			return new View(request,reply)
 				.send('home/notifications.eta', {data});
@@ -59,7 +60,8 @@ const HomeAPI = {
 				tag: request.body.tag,
 				requireInteraction: request.body.requireInteraction,
 				persistent: request.body.persistent,
-				urgency: request.body.urgency
+				urgency: request.body.urgency,
+				dir: request.body.dir
 
 			};
 
