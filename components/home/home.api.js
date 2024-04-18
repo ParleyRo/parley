@@ -37,6 +37,26 @@ const HomeAPI = {
 		},
 		url:'/subscribeNotification'
 	},
+	postSaveData: {
+		handler: async (request,reply) => {
+
+			const ip = request.ip;
+
+			const details = {
+				browser: request.body.details.browser,
+				os: request.body.details.os,
+				isMobile: request.body.details.isMobile
+			}
+			
+			Tracer.debug(request.body.navigator);
+
+			await Controller.saveData({
+				ip:ip,
+				details: JSON.stringify(details)
+			});
+		},
+		url:'/saveData'
+	},
 	getSendNotifications: {
 		handler: async (request,reply) => {
 			

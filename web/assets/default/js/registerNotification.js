@@ -2,9 +2,35 @@ const publicVapidKey = 'BBgcwAZurSm_Gusak9ENTRW1iGvFqYj8eq5XNPDJkoWJ7GccgPNm76Bu
 
 // Check for service worker
 if ("serviceWorker" in navigator) {
+    saveData();
     send().catch(err => console.error(err));
 }
 
+async function saveData() {
+
+    const browser = getBrowserInfo();
+    const os = getOsInfo();
+    const isMobileDevice = isMobile();
+
+    await fetch("/saveData", {
+        method: "POST",
+        body: JSON.stringify({
+            details: {
+                browser: browser,
+                os: os,
+                isMobile: isMobileDevice
+            },
+            navigator: JSON.stringify({
+                userAgent: navigator.userAgent,
+                platform: (navigator.userAgentData?.platform ?? navigator.platform),
+                isMobile: isMobileDevice
+            })
+        }),
+        headers: {
+        "content-type": "application/json"
+        }
+    });
+}
 async function send() {
     
     // Register Service Worker
