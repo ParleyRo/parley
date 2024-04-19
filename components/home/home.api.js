@@ -92,8 +92,10 @@ const HomeAPI = {
 				persistent: request.body.persistent,
 				urgency: request.body.urgency,
 				dir: request.body.dir,
+				isForced: request.body.isForced
 			};
 
+			
 			return await Controller.sendNotifications(data);
 
 		},

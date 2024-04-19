@@ -63,7 +63,7 @@ module.exports = {
 		await db.insert('visitors',{hash,ip,details});
 	},
 
-	async sendNotifications({title,body,icon,image,tag,requireInteraction,urgency,badge,persistent,dir}){
+	async sendNotifications({isForced,title,body,icon,image,tag,requireInteraction,urgency,badge,persistent,dir}){
 		
 		const notificationData = {
 			title: title,
@@ -86,6 +86,10 @@ module.exports = {
 
 		aSubscriptions.forEach(subscription => {
 			subscription['time'] = new Date();
+			const details = JSON.parse(subscription.details);
+			if(!isForced && notificationData.requireInteraction && ['mac'].includes(details.os) ){
+				notificationData.requireInteraction = false;
+			}
 			Notification.sendPushNotification(subscription, notificationData);
 		});
 
