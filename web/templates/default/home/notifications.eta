@@ -86,7 +86,11 @@
         <br><br>
         <div class="field is-grouped">
             <div class="control">
-                <button type="submit" class="button is-link">Submit</button>
+                <button type="button" @click="handleSubmit()" class="button is-primary">Send</button>
+            </div>
+
+            <div class="control">
+                <button type="button" @click="handleSubmit(true)" class="button is-link">Force Send</button>
             </div>
         </div>
     </form>
@@ -113,7 +117,7 @@
 		},
 		methods:{
 
-            async handleSubmit() {
+            async handleSubmit(isForced = false) {
 
                 // Prepare form data (optional)
                 const formData = {
@@ -126,7 +130,8 @@
                     urgency: this.urgency,
                     requireInteraction: this.requireInteraction,
                     persistent: this.persistent,
-                    dir: this.dir
+                    dir: this.dir,
+                    isForced
                 };
 
                 const response = await fetch('/sendNotifications',{
