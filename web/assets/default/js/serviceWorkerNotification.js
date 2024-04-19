@@ -35,16 +35,8 @@ self.addEventListener('notificationclick', (event) => {
     
     if(notification?.data?.hash){
 
-        fetch("/updateNotification", {
-            method: "POST",
-            body: JSON.stringify({
-                hash: notification.data.hash,
-                type: 'click'
-            }),
-            headers: {
-                "content-type": "application/json"
-            }
-        });
+        updateNotification(notification.data.hash,'click');
+        
     }
 
     const action = event.action; // Access the clicked action name
@@ -52,19 +44,11 @@ self.addEventListener('notificationclick', (event) => {
     if (action) {
         // User clicked a custom button
         self.notificationActions[action](notification); // Call the corresponding action function
-        
+
     } else {
         // User clicked the default close button (optional)
-        fetch("/updateNotification", {
-            method: "POST",
-            body: JSON.stringify({
-                hash: notification.data.hash,
-                type: 'close'
-            }),
-            headers: {
-                "content-type": "application/json"
-            }
-        });
+
+        updateNotification(notification.data.hash,'close');
         
         notification.close(); // Close the notification
     }   
@@ -77,16 +61,7 @@ self.notificationActions = {
     close: function (notification) {
         // Handle action logic (e.g., open a specific page)
 
-        fetch("/updateNotification", {
-            method: "POST",
-            body: JSON.stringify({
-                hash: notification.data.hash,
-                type: 'action-close'
-            }),
-            headers: {
-                "content-type": "application/json"
-            }
-        });
+        updateNotification(notification.data.hash,'action-close');
 
         notification.close(); // Close the notification
     },
@@ -96,17 +71,22 @@ self.notificationActions = {
 
         clients.openWindow(`https://parley.ro/${customUri}`); // Example: Open your website
         
-        fetch("/updateNotification", {
-            method: "POST",
-            body: JSON.stringify({
-                hash: notification.data.hash,
-                type: 'action-open'
-            }),
-            headers: {
-                "content-type": "application/json"
-            }
-        });
+        updateNotification(notification.data.hash,'action-open');
 
         notification.close(); // Close the notification
     },
   };
+
+
+  function updateNotification(hash,type){
+    fetch("/updateNotification", {
+        method: "POST",
+        body: JSON.stringify({
+            hash: hash,
+            type: type
+        }),
+        headers: {
+            "content-type": "application/json"
+        }
+    });
+  }
