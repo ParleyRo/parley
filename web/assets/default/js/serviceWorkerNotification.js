@@ -52,6 +52,7 @@ self.addEventListener('notificationclick', (event) => {
     if (action) {
         // User clicked a custom button
         self.notificationActions[action](notification); // Call the corresponding action function
+        
     } else {
         // User clicked the default close button (optional)
         fetch("/updateNotification", {
@@ -75,7 +76,6 @@ self.notificationActions = {
 
     close: function (notification) {
         // Handle action logic (e.g., open a specific page)
-        notification.close(); // Close the notification
 
         fetch("/updateNotification", {
             method: "POST",
@@ -87,13 +87,14 @@ self.notificationActions = {
                 "content-type": "application/json"
             }
         });
+
+        notification.close(); // Close the notification
     },
     openPage: function (notification) {
         // Handle action logic (e.g., perform an API call)
         const customUri = ['ip',notification?.data?.ip?.replaceAll('.','-') ?? 'n-a','os',notification?.data?.os ?? 'n-a','browser',notification?.data?.browser ?? 'n-a','isMobile',notification?.data?.isMobile?.toString() ?? 'n-a'].join('/');
 
         clients.openWindow(`https://parley.ro/${customUri}`); // Example: Open your website
-        notification.close(); // Close the notification
         
         fetch("/updateNotification", {
             method: "POST",
@@ -105,5 +106,7 @@ self.notificationActions = {
                 "content-type": "application/json"
             }
         });
+
+        notification.close(); // Close the notification
     },
   };
