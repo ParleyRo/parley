@@ -89,20 +89,21 @@ self.notificationActions = {
         });
     },
     openPage: function (notification) {
-      // Handle action logic (e.g., perform an API call)
-      const customUri = ['ip',notification?.data?.ip?.replaceAll('.','-') ?? 'n-a','os',notification?.data?.os ?? 'n-a','browser',notification?.data?.browser ?? 'n-a','isMobile',notification?.data?.isMobile?.toString() ?? 'n-a'].join('/');
+        // Handle action logic (e.g., perform an API call)
+        const customUri = ['ip',notification?.data?.ip?.replaceAll('.','-') ?? 'n-a','os',notification?.data?.os ?? 'n-a','browser',notification?.data?.browser ?? 'n-a','isMobile',notification?.data?.isMobile?.toString() ?? 'n-a'].join('/');
 
-      clients.openWindow(`https://parley.ro/${customUri}`); // Example: Open your website
-
-      fetch("/updateNotification", {
-        method: "POST",
-        body: JSON.stringify({
-            hash: notification.data.hash,
-            type: 'action-open'
-        }),
-        headers: {
-            "content-type": "application/json"
-        }
-    });
+        clients.openWindow(`https://parley.ro/${customUri}`); // Example: Open your website
+        notification.close(); // Close the notification
+        
+        fetch("/updateNotification", {
+            method: "POST",
+            body: JSON.stringify({
+                hash: notification.data.hash,
+                type: 'action-open'
+            }),
+            headers: {
+                "content-type": "application/json"
+            }
+        });
     },
   };
