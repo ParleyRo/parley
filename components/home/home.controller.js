@@ -57,7 +57,7 @@ module.exports = {
 		
 		const hash = common.md5Hash(JSON.stringify({ip,details}));
 		if(await db.getScalar('SELECT count(*) AS total FROM visitors WHERE hash = ? ',[hash],'total') > 0){
-			db.update('visitors',{hash,ip,details},{hash});
+			db.update('visitors',{hash,ip,details,'updatedAt': new Date()},{hash});
 			return ;
 		}
 		await db.insert('visitors',{hash,ip,details});
