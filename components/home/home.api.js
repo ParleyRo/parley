@@ -26,8 +26,6 @@ const HomeAPI = {
 				navigator: request.body.navigator
 			}
 			
-			Tracer.debug(request.body.navigator);
-
 			await Controller.saveSubscribeNotificationData({
 				ip:ip,
 				endpoint:endpoint,
@@ -50,7 +48,7 @@ const HomeAPI = {
 				navigator: request.body.navigator
 			}
 			
-			Tracer.debug(request.body.navigator);
+			Tracer.debug(details);
 
 			await Controller.saveData({
 				ip:ip,
@@ -93,16 +91,27 @@ const HomeAPI = {
 				requireInteraction: request.body.requireInteraction,
 				persistent: request.body.persistent,
 				urgency: request.body.urgency,
-				dir: request.body.dir
-
+				dir: request.body.dir,
 			};
 
-			//return data;
 			return await Controller.sendNotifications(data);
 
 		},
 		url:'/sendNotifications'
 	},
+	postUpdateNotification: {
+		handler: async (request,reply) => {
+
+			const data = {
+				hash: request.body.hash,
+				type: request.body.type
+			};
+
+			return await Controller.updateNotification(data);
+
+		},
+		url:'/updateNotification'
+	}
 
 }
 module.exports = HomeAPI;

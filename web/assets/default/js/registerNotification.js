@@ -65,12 +65,11 @@ async function send() {
             },
             navigator: JSON.stringify({
                 userAgent: navigator.userAgent,
-                platform: (navigator.userAgentData?.platform ?? navigator.platform),
-                isMobile: isMobileDevice
+                platform: (navigator.userAgentData?.platform ?? navigator.platform)
             })
         }),
         headers: {
-        "content-type": "application/json"
+            "content-type": "application/json"
         }
     });
     console.log("Push Sent...");
@@ -92,11 +91,23 @@ function urlBase64ToUint8Array(base64String) {
     return outputArray;
 }
 
+// function isMobile() {
+
+//     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? true : false;
+
+// }
+
 function isMobile() {
+    const userAgent = navigator.userAgent;
+    const isAndroid = /Android/i.test(userAgent);
+    const isIOS = /iPad|Tablet/i.test(userAgent); // Adjust for iPad/Tablet detection
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    const isSmallViewport = window.innerWidth <= 768; // Example viewport size check
+  
+    return (isAndroid || isIOS || isTouchDevice) && (isSmallViewport || // Mobile check
+            window.innerWidth <= 1024); // Optional tablet check based on width
+  }
 
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? true : false;
-
-}
 function getBrowserInfo() {
 
     const userAgent = navigator.userAgent.toLowerCase();

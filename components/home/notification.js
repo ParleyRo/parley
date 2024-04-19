@@ -1,6 +1,9 @@
 const db = require('../../libraries/database.js');
 const Tracer = require('tracer').colorConsole();
 const webpush = require('web-push');
+const common = require('../../helpers/Common.js');
+const database = require('../../libraries/database.js');
+
 
 const vapidKeys = {
 	publicKey: 'BBgcwAZurSm_Gusak9ENTRW1iGvFqYj8eq5XNPDJkoWJ7GccgPNm76BuDDFgaVzUKKzl6Hqs6YixodQD-WitjSk',
@@ -12,9 +15,16 @@ webpush.setVapidDetails(
 	vapidKeys.privateKey
 );
 
-class Home {
-	
-	static sendPushNotification(subscriptionData, dataToSend) {
+class Notification {
+
+	static FLAG_SENT_SUCCESS = 1;
+	static FLAG_SENT_FAIL = 2;
+	static FLAG_CLICK = 4;
+	static FLAG_CLOSE = 8;
+	static FLAG_ACTION_CLOSE = 16;
+	static FLAG_ACTION_OPENPAGE = 32;
+
+	static sendPushNotification(subscriptionData, notificationData) {
 
         const subscription = {
             endpoint: subscriptionData.endpoint,
@@ -24,12 +34,30 @@ class Home {
             }
         }
 
-		webpush.sendNotification(subscription, JSON.stringify(dataToSend))
+        const customData = {...JSON.parse(subscriptionData.details), ip: subscriptionData.ip, time: subscriptionData.time};
+        
+        const hash = common.md5Hash(JSON.stringify(customData));
+
+        customData['hash'] = hash;
+
+        db.insert('notificationsEvents',{
+            hash,
+            details: JSON.stringify(customData),
+            data: JSON.stringify(notificationData),
+            flags: 0
+        });
+
+        notificationData['customData'] = {...customData};
+
+		webpush.sendNotification(subscription, JSON.stringify(notificationData))
 			.then(() => {
-                
+                db.update('notificationsEvents',{flags: Notification.FLAG_SENT_SUCCESS},{hash});
+
                 Tracer.info(`Push notification sent successfully to IP: ${subscriptionData.ip}`);
             })
 			.catch(error => {
+                
+                db.update('notificationsEvents',{flags: Notification.FLAG_SENT_FAIL},{hash});
 
                 if(error.statusCode === 410){
                     
@@ -46,4 +74,4 @@ class Home {
 
 }
 
-module.exports = Home; 
+module.exports = Notification; 
