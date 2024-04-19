@@ -112,7 +112,8 @@
                 urgency: "<%= it.data.urgency %>",
                 requireInteraction: <%= it.data.requireInteraction %>,
                 persistent: <%= it.data.persistent %>,
-                dir: "<%= it.data.dir %>"
+                dir: "<%= it.data.dir %>",
+                secret: "<%= it.data.secret %>"
 			}
 		},
 		methods:{
@@ -131,6 +132,7 @@
                     requireInteraction: this.requireInteraction,
                     persistent: this.persistent,
                     dir: this.dir,
+                    secret: this.secret,
                     isForced
                 };
 
