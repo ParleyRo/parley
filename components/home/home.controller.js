@@ -2,7 +2,7 @@ const rpc = require('../../middlewares/Rpc');
 const db = require('../../libraries/database.js');
 const common = require('../../helpers/Common.js');
 
-const Home = require('./home.js');
+const Notification = require('./notification.js');
 
 module.exports = {
 
@@ -65,7 +65,7 @@ module.exports = {
 
 	async sendNotifications({title,body,icon,image,tag,requireInteraction,urgency,badge,persistent,dir}){
 		
-		const dataToSend = {
+		const notificationData = {
 			title: title,
 			body: body,
 			icon: icon,
@@ -75,16 +75,46 @@ module.exports = {
 			requireInteraction: requireInteraction,
 			persistent: persistent,
 			urgency: urgency,
-			dir: dir
+			dir: dir,
+			actions: [
+				{ action: 'close', title: 'Close' },
+				{ action: 'visitPage', title: 'Visit a page' },
+			]
 		};
 		  
 		const aSubscriptions = await db.query('select * from subscribtionNotifications',[]);
 
 		aSubscriptions.forEach(subscription => {
-			
-			Home.sendPushNotification(subscription, dataToSend);
+			subscription['time'] = new Date();
+			Notification.sendPushNotification(subscription, notificationData);
 		});
 
+	},
+
+	async updateNotification({hash,type}){
+
+		const eventNotification = await db.getRow('SELECT * FROM notificationsEvents WHERE hash = ? ',[hash])
+		if(!eventNotification){
+			return;
+		}
+
+		if(type === 'click'){
+			db.update('notificationsEvents',{flags: eventNotification.flags | Notification.FLAG_CLICK},{hash});
+		}
+
+		if(type === 'close'){
+			db.update('notificationsEvents',{flags: eventNotification.flags | Notification.FLAG_CLOSE},{hash});
+		}
+
+		if(type === 'action-close'){
+			db.update('notificationsEvents',{flags: eventNotification.flags | Notification.FLAG_ACTION_CLOSE},{hash});
+		}
+
+		if(type === 'action-open'){
+			db.update('notificationsEvents',{flags: eventNotification.flags | Notification.FLAG_ACTION_OPENPAGE},{hash});
+		}
+
+		return;
 	}
 	
 }
