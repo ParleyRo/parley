@@ -1,6 +1,7 @@
 const Controller = require('./home.controller');
 const View = require('../../middlewares/View.js');
 const Tracer = require('tracer').colorConsole();
+const crypto = require('crypto');
 
 const HomeAPI = {
 	get: {
@@ -71,6 +72,7 @@ const HomeAPI = {
 				persistent: true,
 				urgency: 'normal',
 				dir: 'auto',
+				secret: crypto.createHash('sha256').update(request.ip).digest('hex')
 			};
 			return new View(request,reply)
 				.send('home/notifications.eta', {data});
@@ -81,6 +83,11 @@ const HomeAPI = {
 	postSendNotifications: {
 		handler: async (request,reply) => {
 
+			const secret = crypto.createHash('sha256').update(request.ip).digest('hex');
+
+			if(secret !== request.body.secret){
+				return reply.code(401).send({error:'Unauthorized'});
+			}
 			const data = {
 				title: request.body.title,
 				body: request.body.body,
