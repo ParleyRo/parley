@@ -91,12 +91,6 @@ function urlBase64ToUint8Array(base64String) {
     return outputArray;
 }
 
-// function isMobile() {
-
-//     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? true : false;
-
-// }
-
 function isMobile() {
     const userAgent = navigator.userAgent;
     const isAndroid = /Android/i.test(userAgent);
