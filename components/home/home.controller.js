@@ -2,8 +2,6 @@ const rpc = require('../../middlewares/Rpc');
 const db = require('../../libraries/database.js');
 const common = require('../../helpers/Common.js');
 
-const Notification = require('./notification.js');
-
 module.exports = {
 
 	async getDefault(oParams) {
@@ -42,83 +40,6 @@ module.exports = {
 		}
 
 		return oData
-	},
-
-	async saveSubscribeNotificationData({ip,endpoint,auth,p256dh,details}){ 
-		
-		if(await db.getScalar('SELECT count(*) AS total FROM subscribtionNotifications WHERE endpoint = ?',[endpoint],'total') > 0){
-			db.update('subscribtionNotifications',{ip,endpoint,auth,p256dh,details},{endpoint});
-			return ;
-		}
-		await db.insert('subscribtionNotifications',{ip,endpoint,auth,p256dh,details});
-	},
-
-	async saveData({ip,details}){ 
-		
-		const hash = common.md5Hash(JSON.stringify({ip,details}));
-		if(await db.getScalar('SELECT count(*) AS total FROM visitors WHERE hash = ? ',[hash],'total') > 0){
-			db.update('visitors',{hash,ip,details,'updatedAt': new Date()},{hash});
-			return ;
-		}
-		await db.insert('visitors',{hash,ip,details});
-	},
-
-	async sendNotifications({isForced,title,body,icon,image,tag,requireInteraction,urgency,badge,persistent,dir}){
-		
-		const notificationData = {
-			title: title,
-			body: body,
-			icon: icon,
-			image: image,
-			badge: badge,
-			tag: tag,
-			requireInteraction: requireInteraction,
-			persistent: persistent,
-			urgency: urgency,
-			dir: dir,
-			actions: [
-				{ action: 'close', title: 'Close' },
-				{ action: 'visitPage', title: 'Visit a page' },
-			]
-		};
-		  
-		const aSubscriptions = await db.query('select * from subscribtionNotifications',[]);
-
-		aSubscriptions.forEach(subscription => {
-			subscription['time'] = new Date();
-			const details = JSON.parse(subscription.details);
-			if(!isForced && notificationData.requireInteraction && ['mac'].includes(details.os) ){
-				notificationData.requireInteraction = false;
-			}
-			Notification.sendPushNotification(subscription, notificationData);
-		});
-
-	},
-
-	async updateNotification({hash,type}){
-
-		const eventNotification = await db.getRow('SELECT * FROM notificationsEvents WHERE hash = ? ',[hash])
-		if(!eventNotification){
-			return;
-		}
-
-		if(type === 'click'){
-			db.update('notificationsEvents',{flags: eventNotification.flags | Notification.FLAG_CLICK},{hash});
-		}
-
-		if(type === 'close'){
-			db.update('notificationsEvents',{flags: eventNotification.flags | Notification.FLAG_CLOSE},{hash});
-		}
-
-		if(type === 'action-close'){
-			db.update('notificationsEvents',{flags: eventNotification.flags | Notification.FLAG_ACTION_CLOSE},{hash});
-		}
-
-		if(type === 'action-open'){
-			db.update('notificationsEvents',{flags: eventNotification.flags | Notification.FLAG_ACTION_OPENPAGE},{hash});
-		}
-
-		return;
 	}
 	
 }
