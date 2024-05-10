@@ -10,7 +10,7 @@ class View {
 		this.reply = reply
 		this.template = 'default'
 		this.layout = `templates/default/layouts/main.eta` 
-		this.version = '1.0.3'
+		this.version = '1.0.4'
 		this.meta = {
 			title: '',
 			hostname: req.hostname
