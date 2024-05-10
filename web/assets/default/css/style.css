@@ -2,3 +2,9 @@
 	max-height: none;
 	height: 80px;
 }
+
+@media screen and (max-width: 500px){
+	.no-padding-on-mobile{
+		padding: 0 !important;
+	}
+}
