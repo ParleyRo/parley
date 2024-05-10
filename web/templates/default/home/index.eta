@@ -79,7 +79,7 @@
 		methods:{
 			formatText: function(text){
 				// Array of words to be wrapped in <b> tags
-				const wordsToBold = ['HTML', 'CSS', 'JavaScript', 'Vue.js'];
+				const wordsToBold = ['HTML', 'CSS', 'JavaScript', 'Vue.js','PHP','Laravel','Node.js','MySQL','MongoDB','Git'];
 
 				// Create a regular expression pattern to match any of the words in the array
 				const regexPattern = new RegExp(`\\b(${wordsToBold.join('|')})\\b`, 'gi');
