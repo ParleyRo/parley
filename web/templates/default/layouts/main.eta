@@ -22,7 +22,172 @@
 </head>
 
 <body>
+<style>
+.overlay_18plus-blur > *:not(.overlay_18plus){
+	filter: blur(15px);
+	-webkit-filter: blur(15px);
+	pointer-events: none;
+}
+.overlay_18plus{
+	position: fixed;
+	top: 0;
+	left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
+}
 
+.overlay_18plus-content{
+	max-width: 620px;
+    width: min(620px , 100%);
+    position: absolute;
+    left: calc((100vw - min(620px,100%)) / 2);
+    top: calc((100vh - 500px) / 2);
+    text-align: center;
+    padding: 20px 40px;
+}
+
+.overlay_18plus-content > *{
+	margin-bottom: 25px;
+}
+.overlay_18plus-content h3{
+	font-size: 20px;
+    color: #fff;
+    line-height: 27px;
+}
+
+.overlay_18plus-content p{
+	font-size: 18px;
+    color: #808080;
+    line-height: 24px;
+}
+.overlay_18plus-content .overlay_18plus-enter{
+	color: #fff;
+    display: inline-block;
+    font-size: 30px;
+    width: min(400px, 100%);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-radius: 5px;
+    background: linear-gradient(180deg, #2A9AD6 0.33%, #257FBA 100.33%);
+    cursor: pointer;
+}
+.overlay_18plus-content .overlay_18plus-leave{
+	font-size: 20px;
+	color: #2A9AD6;
+	background-color: transparent;
+	display: inline-block;
+	cursor: pointer;
+}
+</style>
+
+<div id="wrap_all">
+<div class="overlay_18plus" style="display: none;">
+	<div class="overlay_18plus-content">
+		
+		<div>
+			<img width="400" src="https://www.skyprivate.com/wp-content/uploads/2024/02/sp_logo_400.png" alt="SkyPrivate Skype Cam Models">
+		</div>
+
+		<h3>This site contains sexually explicit material.</h3>
+
+		<a class="overlay_18plus-enter">Enter</a>
+		
+		<p>All models are at least 18 years old and have verified their identity. Enter ONLY if you are Over 18 and you agree to our <a title="Cookie policy" href="https://www.skyprivate.com/cookie-policy/" itemprop="url" target="_blank"><b>Cookie policies</b></a>. By using the site I accept the <a href="https://www.skyprivate.com/terms-and-conditions/" target="_blank"><b>Terms and Conditions</b></a> and <a href="https://www.skyprivate.com/privacy-policy/" target="_blank"><b>Privacy Policy</b></a>.</p>
+		
+		<a class="overlay_18plus-leave">No, I’ll Leave</a>
+
+		<div>
+			<img class="" src="https://www.skyprivate.com/wp-content/uploads/2024/02/asacp.png" alt="ASACP">
+		</div>
+	</div>
+	
+</div>
+</div>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag() {
+    dataLayer.push(arguments);
+}
+gtag('js', new Date());
+
+const siteWrapper = document.querySelector('#wrap_all');
+const overlay18plus = document.querySelector('.overlay_18plus');
+
+const checkCookie = () => {
+    return document.cookie.split(';').some(part => part.trim().startsWith('content18plus='));
+}
+
+const isGooglebot = () => {
+
+  	const userAgent = navigator.userAgent;
+	const botNames = ['Googlebot','Chrome-Lighthouse','Google Page Speed Insights'];
+	
+	console.log(userAgent);
+
+	for (const botName of botNames) {
+
+		if (userAgent.includes(botName)) {
+			console.log('Bot detected: ' + botName);
+			return true;
+		}
+	}
+
+	return false
+}
+
+const showModal = () => {
+    if (checkCookie()) {
+        return;
+    }
+    if (isGooglebot()) {
+        return;
+    }
+    siteWrapper.prepend(overlay18plus);
+    overlay18plus.style.display = "block";
+    siteWrapper.classList.add('overlay_18plus-blur');
+}
+
+const removeOverlay18plus = function() {
+    siteWrapper.classList.remove('overlay_18plus-blur');
+    overlay18plus.remove();
+    document.cookie = 'content18plus' + '=' + encodeURIComponent(1) + '; expires=' + new Date(new Date().setDate(new Date().getDate() + 400)).toUTCString() + '; path=/';
+}
+
+overlay18plus.addEventListener('click', function(event) {
+    if (event.target === overlay18plus) {
+
+        removeOverlay18plus();
+        gtag('event', 'age_verification_clickOnSide', {
+            'event_category': 'Age Verification',
+            'event_label': 'Confirmed 18+',
+            'non_interaction': true
+        });
+    }
+});
+
+document.querySelector('.overlay_18plus-content .overlay_18plus-enter').addEventListener('click', function(event) {
+    removeOverlay18plus();
+    gtag('event', 'age_verification_success', {
+        'event_category': 'Age Verification',
+        'event_label': 'Confirmed 18+',
+        'non_interaction': true
+    });
+});
+
+document.querySelector('.overlay_18plus-content .overlay_18plus-leave').addEventListener('click', function(event) {
+    gtag('event', 'age_verification_fail', {
+        'event_category': 'Age Verification',
+        'event_label': 'Opt-Out',
+        'non_interaction': true
+    });
+    window.location.href = 'https://www.google.com';
+});
+
+
+setTimeout(showModal, 1000);
+</script>
 	<script type="importmap">
 		{
 			"imports": {
