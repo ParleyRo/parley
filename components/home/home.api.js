@@ -7,7 +7,7 @@ const HomeAPI = {
 		handler: async (request,reply) => {
 			
 			const isGooglebot = () => {
-				const userAgent = navigator.userAgent;
+				const userAgent = request.headers['user-agent'];
 				const botNames = ['Googlebot','Chrome-Lighthouse']
 				for (const botName of botNames) {
 				  if (userAgent.includes(botName)) {
