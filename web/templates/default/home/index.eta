@@ -23,7 +23,7 @@
 		</div>
 		
 		<div class="content">
-			
+			<br>
 			<h3 class="title is-size-3 has-text-centered">About me</h3>
 
 			<div class="field">
@@ -34,7 +34,7 @@
 
 			<progress v-if="isLoading" class="progress is-large is-primary" max="100">Loading...</progress>
 
-			<p v-for="sText in text.list[text.language]" v-html="sText"></p>
+			<p v-for="sText in text.list[text.language]" v-html="formatText(sText)" class="is-size-5"></p>
 
 		</div>
 	</div>
@@ -77,6 +77,16 @@
 			}
 		},
 		methods:{
+			formatText: function(text){
+				// Array of words to be wrapped in <b> tags
+				const wordsToBold = ['HTML', 'CSS', 'JavaScript', 'Vue.js'];
+
+				// Create a regular expression pattern to match any of the words in the array
+				const regexPattern = new RegExp(`\\b(${wordsToBold.join('|')})\\b`, 'gi');
+
+				// Replace each matched word with its equivalent wrapped in <b> tags
+				return text.replace(regexPattern, '<b>$1</b>');
+			},
 			changedLanguage: async function(){
 				
 				if(this.text.list[this.text.language] != null)
