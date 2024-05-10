@@ -33,7 +33,7 @@
 
 	<%~ await includeFile('templates/default/layouts/navbar.eta', it) %>
   
-	<section class="section is-medium no-padding-on-mobile">
+	<section class="section is-medium no-x-padding-on-mobile">
 		<div class="container is-max-desktop">
 			<%~ await includeFile(it.body, it) %>
 		</div>
