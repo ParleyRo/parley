@@ -4,7 +4,8 @@
 }
 
 @media screen and (max-width: 500px){
-	.no-padding-on-mobile{
-		padding: 0 !important;
+	.no-x-padding-on-mobile{
+		padding-left: 0 !important;
+		padding-right: 0 !important;
 	}
 }
