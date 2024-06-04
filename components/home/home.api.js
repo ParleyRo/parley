@@ -42,5 +42,3 @@ const HomeAPI = {
 
 }
 module.exports = HomeAPI;
-
-
