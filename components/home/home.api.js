@@ -24,6 +24,20 @@ const HomeAPI = {
 				.send('home/index.eta',await Controller.getDefault({}));
 		},
 		url:'/'
+	},
+	post:{
+		handler: async (request,reply) => {
+			
+			const body = request.body;
+			
+			console.log(body);
+						
+			return {
+				state: 'failed',
+				data: null
+			}
+		},
+		url:'/svakom/'
 	}
 
 }

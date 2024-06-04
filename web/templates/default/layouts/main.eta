@@ -41,7 +41,22 @@
 		</div>
 	</section>
 
-	<script src="http://127.0.0.1:5001/assets/default/js/notifio.js?v=<%= Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000 %>" defer></script>
+	<script src="http://127.0.0.1:5001/assets/default/js/notifio.js" ></script>
+
+	<script>
+		(function() {
+			window.Notifio = window.Notifio || {};
+			Notifio.init(
+				'xxx',
+				{
+					id_user:1
+				},
+				{
+					workerPath: '/assets/default/js/notifio_worker/',
+				}
+			);
+		})();
+	</script>
 
 	<% if (it.js) { %>
 		<% it.js.forEach((js) => { %>
