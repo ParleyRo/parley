@@ -8,6 +8,7 @@
     "@fastify/static": "^6.4.0",
     "@fastify/view": "^7.0.0",
     "aws-sdk": "^2.1309.0",
+    "discord.js": "^14.17.3",
     "dotenv": "^16.0.3",
     "eta": "^2.0.0",
     "fast-jwt": "^2.0.2",

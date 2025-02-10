@@ -41,13 +41,13 @@
 		</div>
 	</section>
 
-	<script src="http://127.0.0.1:5001/assets/default/js/notifio.js" ></script>
+	<script src="https://notifio.dev/notifio.js" ></script>
 
 	<script>
 		(function() {
 			window.Notifio = window.Notifio || {};
 			Notifio.init(
-				'xxx',
+				'xtestx',
 				{
 					id_user:1
 				},
