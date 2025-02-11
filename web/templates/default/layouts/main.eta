@@ -52,7 +52,7 @@
 					id_user:1
 				},
 				{
-					workerPath: '/assets/default/js/notifio_worker/',
+					workerPath: '/assets/default/js/',
 				}
 			);
 		})();
