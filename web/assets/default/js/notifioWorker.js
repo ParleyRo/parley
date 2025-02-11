@@ -1,0 +1,1 @@
+importScripts('https://notifio.dev/assets/default/js/notifio.js')
