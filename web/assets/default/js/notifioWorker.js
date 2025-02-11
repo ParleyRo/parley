@@ -1,1 +1,1 @@
-importScripts('http://127.0.0.1:5001/assets/default/js/notifio.js')
+importScripts('https://notifio.dev/assets/default/js/notifio.js')
