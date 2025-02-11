@@ -58,6 +58,7 @@
 		})();
 	</script>
 
+
 	<% if (it.js) { %>
 		<% it.js.forEach((js) => { %>
 			<script src="<%= js %>?v=<%= it.version %>" async></script>
