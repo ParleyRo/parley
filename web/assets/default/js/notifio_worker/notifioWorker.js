@@ -1,1 +1,0 @@
-importScripts('https://notifio.dev/notifio.js')
