@@ -4,7 +4,7 @@
 //     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent]
 // });
 
-// const TOKEN = 'MTMzNTk3MDI3ODQ5MjA4MjIwOA.GE0z34.yaDqHPJesVeuc2F3jC7zyRRrag5GhBM0T7b56c';
+// const TOKEN = **token**;
 // const CHANNEL_ID = '1334450462337925150';
 
 // client.once('ready', async () => {
