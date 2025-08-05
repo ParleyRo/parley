@@ -8,13 +8,16 @@
     }
     .radio-item{
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
         height: 100%;
         align-items: center;
         justify-content: center;
         cursor: pointer;
     }
-
+    .radio-name{
+        width: 100%;
+    }
 </style>
 
 <div id="radio">
@@ -28,7 +31,7 @@
                     :style="{ backgroundColor: `${station.backgroundColor || '#111'}` }"
                     @click="playRadio(station.stream)"
                 >
-                    <div class="has-text-centered">{{ station.name }}</div>
+                    <div class="radio-name has-text-centered">{{ station.name }}</div>
                     <img :src="station.logo" alt="Logo" class="radio-logo" />
                                         
                 </div>
