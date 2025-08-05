@@ -33,6 +33,10 @@
             <a href="/hobby/math/regula3simpla" class="navbar-item <%= it.meta.url.path === '/hobby/math/regula3simpla' ? 'is-active' : '' %>">
               Regula de 3 simpla
             </a>
+
+            <a href="/hobby/radio" class="navbar-item <%= it.meta.url.path === '/hobby/radio' ? 'is-active' : '' %>">
+              Radio
+            </a>
           
           </div>
         </div>

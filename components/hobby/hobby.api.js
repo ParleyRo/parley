@@ -28,6 +28,15 @@ const HobbyAPI = {
 
 		},
 		url:'/hobby/math/regula3simpla'
+	},
+	getRadio: {
+		handler: async (request,reply) => {
+			
+			return new View(request,reply)
+				.send('hobby/radio/list.eta',await Controller.getRadioData({}));
+
+		},
+		url:'/hobby/radio'
 	}
 
 }

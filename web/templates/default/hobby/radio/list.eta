@@ -1,0 +1,71 @@
+<style>
+
+    #global-player{
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    .radio-item{
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+</style>
+
+<div id="radio">
+	
+	<section class="section">
+
+        <div class="grid">
+            <div class="cell " v-for="station in stations" :key="station.name">
+                <div 
+                    class="field radio-item"
+                    :style="{ backgroundColor: `${station.backgroundColor || '#111'}` }"
+                    @click="playRadio(station.stream)"
+                >
+                    <div class="has-text-centered">{{ station.name }}</div>
+                    <img :src="station.logo" alt="Logo" class="radio-logo" />
+                                        
+                </div>
+            </div>
+        </div>
+
+	</section>
+
+    <div id="global-player">
+    <audio ref="player" controls autoplay></audio>
+  </div>
+
+</div>
+
+
+<script type="module">
+  import { createApp, ref, onMounted } from 'vue';
+
+  const app = createApp({
+    setup() {
+      const player = ref(null);
+      const stations = <%~ JSON.stringify(it.stations) %>;
+
+      const playRadio = (url) => {
+        if (player.value) {
+          player.value.src = url;
+          player.value.play();
+        }
+      };
+
+      return {
+        stations,
+        player,
+        playRadio
+      };
+    }
+  });
+
+  app.mount('#radio');
+</script>
