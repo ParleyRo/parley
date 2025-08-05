@@ -4,7 +4,7 @@
 //     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent]
 // });
 
-// const TOKEN = **token**;
+// const TOKEN = XXXX; // Replace with your bot token
 // const CHANNEL_ID = '1334450462337925150';
 
 // client.once('ready', async () => {
