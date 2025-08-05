@@ -1,5 +1,7 @@
 <style>
-
+    #radio{
+        background-color: #1d1d1d;
+    }
     #global-player{
         position: fixed;
         bottom: 20px;
@@ -14,9 +16,51 @@
         align-items: flex-start;
         justify-content: center;
         cursor: pointer;
+        max-height: 170px;
+        overflow: hidden;
+        background-color: #111;
+        border: 3px solid #111;
+        border-radius: 4px;
+        padding: 2px 4px;
+    }
+
+    .radio-item.active{
+        border-color: #478fe7;
+    }
+
+    .radio-item .icon{
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-100%, -100%);
+        font-size: 56px;
+        color: rgba(255, 255, 255, 0.90);
+    }
+
+    .radio-item.active .icon{
+        display: block;
+    }
+
+    .radio-item.active img{
+        opacity: 0.3;
+    }
+
+    .radio-item.active .icon.fa-volume-up{
+        animation: fadeOpacity 2s infinite ease-in-out;
     }
     .radio-name{
         width: 100%;
+    }
+
+
+    @keyframes fadeOpacity {
+        0%, 100% {
+            opacity: 0.3;
+        }
+        50% {
+            opacity: 1;
+        }
     }
 </style>
 
@@ -27,12 +71,15 @@
         <div class="grid">
             <div class="cell " v-for="station in stations" :key="station.name">
                 <div 
-                    class="field radio-item"
-                    :style="{ backgroundColor: `${station.backgroundColor || '#111'}` }"
-                    @click="playRadio(station.stream)"
+                    class="field radio-item is-relative"
+                    :class="{ active: activeStation === station.name }"
+                    :style="station.backgroundColor ? { backgroundColor: station.backgroundColor } : {}"
+                    v-on:click="playRadio(station.stream, station.name)"
                 >
                     <div class="radio-name has-text-centered">{{ station.name }}</div>
                     <img :src="station.logo" alt="Logo" class="radio-logo" />
+                    {{isPlaying}}
+                    <i :class="['fa', isPlaying ? 'fa-volume-up' : 'fa-stop', 'icon']" aria-hidden="true"></i>
                                         
                 </div>
             </div>
@@ -40,33 +87,91 @@
 
 	</section>
 
-    <div id="global-player">
-    <audio ref="player" controls autoplay></audio>
-  </div>
+    <div id="global-player" class="is-hidden">
+        <audio ref="player" controls autoplay></audio>
+    </div>
 
 </div>
 
 
 <script type="module">
-  import { createApp, ref, onMounted } from 'vue';
+  import { createApp } from 'vue';
 
   const app = createApp({
-    setup() {
-      const player = ref(null);
+    data() {
+      const player = null;
       const stations = <%~ JSON.stringify(it.stations) %>;
-
-      const playRadio = (url) => {
-        if (player.value) {
-          player.value.src = url;
-          player.value.play();
-        }
-      };
-
+      
       return {
         stations,
-        player,
-        playRadio
+        activeStation: null,
+        player: null,
+        isPlaying: false
       };
+    },
+    methods:{
+
+        playRadio: async function(url,name){
+
+            
+            if (!this.player) {
+                return;
+            }
+
+            if ((this.activeStation === name) && this.isPlaying) {
+                // Dacă se apasă pe aceeași stație și este deja activă → oprește
+
+                this.player.pause();
+                return;
+            }
+
+            this.activeStation = name;           
+
+            this.player.src = url;
+            this.player.play();
+
+            try {
+                if(!this.isPlaying){
+                    await this.player.play();
+                }
+
+            } catch (error) {
+
+                if (error.name === 'AbortError') {
+                    // Încearcă din nou după un mic delay
+                    console.log("Eroare la play, încerc din nou...");
+                    setTimeout(() => {
+                        
+                        if(this.isPlaying){
+                            console.log("Eroare la play, este deja în curs de redare");
+                            return;
+                        }
+                        console.log("Eroare la play, încerc din nou");
+
+                        this.player.play().catch(err => {
+                            console.error("Eroare la retry:", err);
+                        });
+                    }, 200); // 100ms delay
+                } else {
+                    console.error("Eroare la play:", error);
+                }
+
+            }
+        
+            
+        }
+    },
+    mounted() {
+        //this.player = this.$refs.player;
+
+        this.player = new Audio();
+        
+        this.player.addEventListener('play', () => {
+            this.isPlaying = true;
+        });
+        this.player.addEventListener('pause', () => {
+            this.isPlaying = false;
+        });
     }
   });
 
