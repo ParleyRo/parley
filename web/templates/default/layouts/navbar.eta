@@ -21,7 +21,7 @@
 
         <div class="navbar-item has-dropdown is-hoverable">
 
-          <a class="navbar-link">Local Apps</a>
+          <a class="navbar-link">Chestii</a>
 
           <div class="navbar-dropdown is-boxed is-hoverable">
             <a href="/hobby/pescuit/lungimeFire" class="navbar-item <%= it.meta.url.path === '/hobby/pescuit/lungimeFire' ? 'is-active' : '' %>">
@@ -43,7 +43,7 @@
 
 		 <div class="navbar-item has-dropdown is-hoverable">
 
-          <a class="navbar-link">Subdomain Apps</a>
+          <a class="navbar-link">Aplicatii</a>
 
           <div class="navbar-dropdown is-boxed is-hoverable">
            
