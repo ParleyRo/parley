@@ -113,13 +113,16 @@
 
         playRadio: async function(url,name){
 
-            
+            console.log(1111)
             if (!this.player) {
                 return;
             }
 
             if ((this.activeStation === name) && this.isPlaying) {
-                this.player.pause();
+
+                this.isPlaying = false;
+                let ceva = await this.player.pause();
+
                 return;
             }
 
@@ -127,21 +130,14 @@
 
             this.player.src = url;
             <% /* this.player.play(); */ %>
+            
+            if(!this.isPlaying){
 
-            try {
-                if(!this.isPlaying){
-                    this.player.play();
-                }
-
-            } catch (error) {
-
-                if (error.name === 'AbortError') {
-                    
-                } else {
-                    console.error("Eroare la play:", error);
-                }
-
+                this.player.play().catch(err => {
+                    console.error("Eroare la retry:", err);
+                });
             }
+            
         
         }
     },
@@ -154,6 +150,7 @@
             this.isPlaying = true;
         });
         this.player.addEventListener('pause', () => {
+        console.log(5555)
             this.isPlaying = false;
         });
     }
