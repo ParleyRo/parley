@@ -78,7 +78,7 @@
                 >
                     <div class="radio-name has-text-centered">{{ station.name }}</div>
                     <img :src="station.logo" alt="Logo" class="radio-logo" />
-                    {{isPlaying}}
+                    
                     <i :class="['fa', isPlaying ? 'fa-volume-up' : 'fa-stop', 'icon']" aria-hidden="true"></i>
                                         
                 </div>
@@ -119,8 +119,6 @@
             }
 
             if ((this.activeStation === name) && this.isPlaying) {
-                // Dacă se apasă pe aceeași stație și este deja activă → oprește
-
                 this.player.pause();
                 return;
             }
@@ -128,37 +126,23 @@
             this.activeStation = name;           
 
             this.player.src = url;
-            this.player.play();
+            <% /* this.player.play(); */ %>
 
             try {
                 if(!this.isPlaying){
-                    await this.player.play();
+                    this.player.play();
                 }
 
             } catch (error) {
 
                 if (error.name === 'AbortError') {
-                    // Încearcă din nou după un mic delay
-                    console.log("Eroare la play, încerc din nou...");
-                    setTimeout(() => {
-                        
-                        if(this.isPlaying){
-                            console.log("Eroare la play, este deja în curs de redare");
-                            return;
-                        }
-                        console.log("Eroare la play, încerc din nou");
-
-                        this.player.play().catch(err => {
-                            console.error("Eroare la retry:", err);
-                        });
-                    }, 200); // 100ms delay
+                    
                 } else {
                     console.error("Eroare la play:", error);
                 }
 
             }
         
-            
         }
     },
     mounted() {
