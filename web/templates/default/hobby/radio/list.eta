@@ -129,7 +129,6 @@
             this.activeStation = name;           
 
             this.player.src = url;
-            <% /* this.player.play(); */ %>
             
             if(!this.isPlaying){
 
