@@ -41,9 +41,9 @@
 		</div>
 	</section>
 
-	<script src="https://notifio.dev/assets/default/js/notifio.js" ></script>
+	<% /* <script src="https://notifio.dev/assets/default/js/notifio.js" ></script> */ %>
 
-	<script>
+	<% /* <script>
 		(function() {
 			window.Notifio = window.Notifio || {};
 			Notifio.init(
@@ -56,7 +56,7 @@
 				}
 			);
 		})();
-	</script>
+	</script> */ %>
 
 	<% if (it.js) { %>
 		<% it.js.forEach((js) => { %>
