@@ -15,7 +15,6 @@ class View {
 			title: '',
 			hostname: req.hostname
 		}
-		this.subdomanins = config.subdomains;
 
 		if (this.req) {
 			this.meta = Object.assign(this.meta,{
@@ -147,7 +146,6 @@ class View {
 			this.layout,
 			{
 				...this.data,
-				subdomains: this.subdomanins,
 				...data,
 				meta: this.meta,
 				version: this.version,

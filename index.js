@@ -3,7 +3,7 @@ const fastify = require('./app')();
 
 // Run the server!
 fastify.listen({port: process.env.PORT || 80, host:"0.0.0.0"} , (err, address) => {
-
+  console.log(`Started on: ${address}`)
   if (err) throw err
 
 })

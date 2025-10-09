@@ -21,13 +21,5 @@ module.exports = {
       accessKeyId: "xxx",
       secretAccessKey: "xxx",
       region: "xxx"
-    },
-    subdomains: {
-      eficienta: {
-        port: 1234
-      },
-      facturamea: {
-        port: 1234
-      }
     }
   };
