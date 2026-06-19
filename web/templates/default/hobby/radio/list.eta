@@ -77,19 +77,15 @@
                     v-on:click="playRadio(station.stream, station.name)"
                 >
                     <div class="radio-name has-text-centered">{{ station.name }}</div>
-                    <img :src="station.logo" alt="Logo" class="radio-logo" />
+                    <img v-if="station.logo" :src="station.logo" alt="Logo" class="radio-logo" @error="$event.target.style.display='none'" />
                     
-                    <i :class="['fa', isPlaying ? 'fa-volume-up' : 'fa-stop', 'icon']" aria-hidden="true"></i>
+                    <i :class="['fa', isPlaying ? 'fa-volume-up' : 'fa-play', 'icon']" aria-hidden="true"></i>
                                         
                 </div>
             </div>
         </div>
 
 	</section>
-
-    <div id="global-player" class="is-hidden">
-        <audio ref="player" controls autoplay></audio>
-    </div>
 
 </div>
 
@@ -99,8 +95,7 @@
 
   const app = createApp({
     data() {
-      const player = null;
-      const stations = <%~ JSON.stringify(it.stations) %>;
+      const stations = JSON.parse('<%~ JSON.stringify(it.stations).replace(/</g, "\\u003c") %>');
       
       return {
         stations,
@@ -111,45 +106,32 @@
     },
     methods:{
 
-        playRadio: async function(url,name){
+        playRadio: function(url, name){
 
-            console.log(1111)
             if (!this.player) {
                 return;
             }
 
             if ((this.activeStation === name) && this.isPlaying) {
-
-                this.isPlaying = false;
-                let ceva = await this.player.pause();
-
+                this.player.pause();
                 return;
             }
 
             this.activeStation = name;           
-
             this.player.src = url;
-            
-            if(!this.isPlaying){
-
-                this.player.play().catch(err => {
-                    console.error("Eroare la retry:", err);
-                });
-            }
-            
-        
+            this.player.play().catch(err => {
+                console.error("Eroare la redare:", err);
+            });
         }
     },
     mounted() {
-        //this.player = this.$refs.player;
-
+    
         this.player = new Audio();
         
         this.player.addEventListener('play', () => {
             this.isPlaying = true;
         });
         this.player.addEventListener('pause', () => {
-        console.log(5555)
             this.isPlaying = false;
         });
     }

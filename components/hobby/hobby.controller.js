@@ -11,7 +11,7 @@ module.exports = {
 		return oData
 	},
 
-	async getRadioData(oFilter) {
+	async getRadioData() {
 		
 		const oData = await db.query(`
 				SELECT * 
