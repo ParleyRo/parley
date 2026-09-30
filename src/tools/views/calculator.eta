@@ -1,0 +1,14 @@
+<section x-data="calculator('<%= it.tool.slug %>')" class="calculator">
+  <span class="tool-icon modal-tool-icon"><svg class="icon" aria-hidden="true"><use href="#i-<%= it.tool.icon %>"/></svg></span><p class="eyebrow"><%= it.tool.category %></p><h2 id="modal-title"><%= it.tool.title %></h2><p class="modal-description"><%= it.tool.description %></p>
+  <form @submit.prevent="calculate()" @input="calculate()" novalidate>
+    <% if (it.tool.slug === 'line-length') { %>
+      <div class="form-grid"><label>Diametru de pe tambur <span class="input-unit">mm</span><input inputmode="decimal" x-model="a" placeholder="0,33" required></label><label>Lungime de pe tambur <span class="input-unit">m</span><input inputmode="decimal" x-model="b" placeholder="320" required></label><label class="full-width">Diametru dorit <span class="input-unit">mm</span><input inputmode="decimal" x-model="c" placeholder="0,25" required></label></div><p class="field-help">Folosește aceeași unitate pentru ambele diametre.</p>
+    <% } else if (it.tool.slug === 'casting-weight') { %>
+      <label>Test de curbură al lansetei <span class="input-unit">lbs</span><input inputmode="decimal" x-model="a" placeholder="3,5" required></label><p class="field-help">Valoarea TC inscripționată pe lansetă, în livre.</p>
+    <% } else { %>
+      <p class="formula">A → B <span>/</span> C → X</p><div class="form-grid"><label>Valoarea A<input inputmode="decimal" x-model="a" placeholder="2" required></label><label>Valoarea B<input inputmode="decimal" x-model="b" placeholder="3" required></label><label class="full-width">Valoarea C<input inputmode="decimal" x-model="c" placeholder="4" required></label></div><label class="checkbox-label"><input type="checkbox" x-model="rounded" @change="calculate()"> Rotunjește la două zecimale</label>
+    <% } %>
+    <p class="field-error" x-show="error" x-text="error" role="alert" x-cloak></p>
+    <div class="calculation-result" aria-live="polite"><span><%= it.tool.slug === 'line-length' ? 'LUNGIME APROXIMATIVĂ' : it.tool.slug === 'casting-weight' ? 'GREUTATE OPTIMĂ' : 'VALOAREA LUI X' %></span><output x-text="result || '—'"></output><small x-text="detail || 'Completează valorile pentru a vedea rezultatul.'"></small></div>
+  </form>
+</section>

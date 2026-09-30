@@ -1,0 +1,13 @@
+<div class="presentation-fragment" data-language="<%= it.language %>" lang="<%= it.language %>" dir="<%= it.language === 'ar' ? 'rtl' : 'ltr' %>">
+  <div class="hero-grid">
+    <div class="hero-copy"><p class="role-label">SOFTWARE DEVELOPER</p><h1>Cristian<br>Pirloaga<span>.</span></h1><p class="hero-intro"><%= it.content.intro %></p><a href="#experienta" class="hero-scroll"><span>↓</span> About me</a></div>
+    <div class="portrait-scene" aria-label="Ilustrație Cristian Pirloaga"><div class="portrait-grid"></div><span class="orbit orbit-one"></span><span class="orbit orbit-two"></span><span class="portrait-code" aria-hidden="true">&lt;/&gt;</span><div class="portrait-frame"><img src="/assets/img/avatar.jpg" alt="Cristian Pirloaga" width="240" height="240"></div><span class="floating-tag tag-js"><span class="tag-dot"></span> JavaScript</span><span class="floating-tag tag-php">{ } &nbsp; PHP</span><span class="floating-tag tag-node">↳ Node.js</span><div class="portrait-caption"><span class="status-dot"></span> A little code. A lot of curiosity.</div><span class="scene-index" aria-hidden="true">CP — 01</span></div>
+  </div>
+  <div id="experienta" class="skills-heading"><span class="eyebrow">01 / ABOUT ME</span><span class="heading-line"></span><span class="small-mono">&lt;skills /&gt;</span></div>
+  <div class="skills-grid">
+    <% it.content.sections.forEach((section, index) => { %>
+    <section class="skill-card"><div class="skill-title"><span class="skill-icon"><svg class="icon" aria-hidden="true"><use href="#i-<%= section.icon %>"/></svg></span><h2><%= section.title %></h2><span class="skill-number">0<%= index + 1 %></span></div><ul><% for (const item of section.items) { %><li><%= item %></li><% } %></ul></section>
+    <% }); %>
+  </div>
+  <p class="about-outro"><%= it.content.outro %></p>
+</div>

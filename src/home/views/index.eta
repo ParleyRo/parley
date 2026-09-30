@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Cristian Pirloaga — software developer. Un colț personal pentru cod, idei și mici unelte utile.">
+  <meta name="theme-color" content="#f8f9f5">
+  <title>Parley — Cristian Pirloaga</title>
+  <link rel="icon" href="/assets/img/favicon.ico">
+  <% for (const stylesheet of it.assets.styles) { %><link rel="stylesheet" href="<%= stylesheet %>"><% } %>
+  <script type="module" src="<%= it.assets.script %>"></script>
+</head>
+<body x-data="shell" data-initial-tool="<%= it.initialTool %>" :class="{ 'has-player': $store.radio.station }">
+  <%~ include('icons') %>
+  <a class="skip-link" href="#main">Sari la conținut</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/" aria-label="Parley — acasă"><img src="/assets/img/logo-inline.png" alt="Parley" width="124" height="58"><span>un colț personal.</span></a>
+      <nav aria-label="Navigare principală"><a href="#despre" class="nav-about">Despre mine</a><a href="#utilitare">Utilitare <span aria-hidden="true">↗</span></a></nav>
+    </div>
+  </header>
+  <main id="main">
+    <section id="despre" class="container about-section">
+      <div class="section-toolbar">
+        <p class="eyebrow"><span class="status-dot"></span> COD. CURIOZITATE. UN PIC DE MINE.</p>
+        <form id="language-form" x-data="translation" hx-post="/translate" hx-target="#presentation" hx-swap="innerHTML" hx-trigger="change, submit" hx-sync="this:replace" hx-indicator="#translation-progress"
+          @htmx:before-request="begin($event)" @htmx:after-request="finish($event)" @htmx:after-swap="applied()" @translation-error.window="error = $event.detail.message">
+          <label class="language-control"><svg class="icon" aria-hidden="true"><use href="#i-globe"/></svg><span class="sr-only">Limba prezentării</span>
+            <select name="toLanguage" x-model="selected" aria-label="Limba prezentării"><% for (const [code, name] of it.languages) { %><option value="<%= code %>"><%= name %></option><% } %></select>
+          </label>
+          <span id="translation-progress" class="htmx-indicator translation-progress" role="status">Se traduce…</span>
+          <div class="translation-error" x-cloak x-show="error" role="alert"><span x-text="error"></span><button class="text-button" type="submit">Reîncearcă</button></div>
+        </form>
+      </div>
+      <div id="presentation" aria-live="polite"><%~ include('presentation', it) %></div>
+    </section>
+    <section id="utilitare" class="tools-section">
+      <div class="container">
+        <div class="section-heading"><div><p class="eyebrow">02 / MICI LUCRURI UTILE</p><h2>Unelte de buzunar<span>.</span></h2></div><p>Pentru hobby-uri, calcule rapide<br>și muzica de fundal.</p></div>
+        <div class="tools-grid">
+          <% for (const tool of it.tools) { %>
+          <a href="/?tool=<%= tool.slug %>" class="tool-card tool-<%= tool.slug %>" @click.prevent="openTool('<%= tool.slug %>', $el)">
+            <div class="tool-top"><span class="tool-icon"><svg class="icon" aria-hidden="true"><use href="#i-<%= tool.icon %>"/></svg></span><span class="tool-category"><%= tool.category %></span></div>
+            <h3><%= tool.title %></h3><p><%= tool.description %></p><span class="tool-link"><%= tool.label %><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></span>
+          </a>
+          <% } %>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="container site-footer"><div><a class="footer-wordmark" href="/">parley<span>.</span></a><p>Cod cu personalitate.</p></div><div class="footer-socials"><span>You can find me here</span><a href="https://www.linkedin.com/in/cristian-pirloaga-16404ab7/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg class="icon"><use href="#i-linkedin"/></svg></a><a href="https://www.facebook.com/pirloaga.cristian" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg class="icon"><use href="#i-facebook"/></svg></a></div><a class="back-top" href="#main">Înapoi sus ↑</a></footer>
+  <dialog id="tool-dialog" class="tool-dialog" aria-labelledby="modal-title" @cancel.prevent="closeTool()" @keydown.tab="trapTab($event)" @click="if ($event.target === $el) closeTool()">
+    <div class="dialog-surface"><button class="icon-button modal-close" type="button" aria-label="Închide modalul" @click="closeTool()"><svg class="icon"><use href="#i-close"/></svg></button>
+      <div id="tool-content"><%~ it.initialModal %></div>
+    </div>
+  </dialog>
+  <div class="mini-player" x-cloak x-show="$store.radio.station" role="region" aria-label="Player radio">
+    <div class="player-art"><svg class="icon" aria-hidden="true"><use href="#i-radio"/></svg></div>
+    <button class="player-details" @click="openTool('radio', $el)"><span class="player-caption" x-text="$store.radio.loading ? 'SE CONECTEAZĂ…' : ($store.radio.playing ? 'ACUM SE AUDE' : 'RADIO')"></span><strong x-text="$store.radio.station?.name"></strong></button>
+    <button class="play-button" @click="$store.radio.toggle()" :aria-label="$store.radio.playing ? 'Pauză' : 'Redă postul'"><svg class="icon"><use :href="$store.radio.playing ? '#i-pause' : '#i-play'"/></svg></button>
+    <label class="volume-control"><svg class="icon" aria-hidden="true"><use href="#i-volume"/></svg><span class="sr-only">Volum</span><input type="range" min="0" max="1" step="0.05" :value="$store.radio.volume" @input="$store.radio.setVolume($el.value)" aria-label="Volum"></label>
+    <button class="icon-button player-open" @click="openTool('radio', $el)" aria-label="Deschide lista de posturi"><svg class="icon"><use href="#i-external"/></svg></button>
+    <div class="player-error" x-show="$store.radio.error" role="alert"><span x-text="$store.radio.error"></span><button class="text-button" @click="$store.radio.retry()">Reîncearcă</button></div>
+  </div>
+  <audio id="radio-audio" preload="none"></audio>
+</body>
+</html>
