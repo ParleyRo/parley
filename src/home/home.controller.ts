@@ -9,11 +9,12 @@ export class HomeController {
   constructor(private readonly views: ViewsService, private readonly utilities: ToolsService) {}
   @Get('/')
   @Header('Content-Type', 'text/html; charset=utf-8')
-  async index(@Query('tool') slug?: string) {
+  async index(@Query('tool') slug?: string, @Query('section') section?: string) {
     if (slug !== undefined && !findTool(slug)) throw new NotFoundException('Utilitar inexistent.');
+    if (section !== undefined && !['about', 'cv', 'contact'].includes(section)) throw new NotFoundException('Secțiune inexistentă.');
     return this.views.render('home/views/index', {
       content: presentation, language: 'en', languages, tools, assets: this.views.assets(),
-      initialTool: slug ?? '', initialModal: slug ? await this.utilities.render(slug) : '',
+      initialSection: slug ?? section ?? 'about', initialContent: slug ? await this.utilities.render(slug) : '',
     });
   }
   @Get('hobby/pescuit/lungimeFire')
@@ -25,5 +26,5 @@ export class HomeController {
   @Get('hobby/radio')
   radio(@Res() reply: FastifyReply) { return reply.redirect('/?tool=radio', 302); }
   @Get('health')
-  health() { return { status: 'ok', app: 'parley-v2' }; }
+  health() { return { status: 'ok', app: 'parley-v3' }; }
 }

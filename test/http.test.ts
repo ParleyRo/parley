@@ -29,29 +29,43 @@ before(async () => {
   await app.getHttpAdapter().getInstance().ready();
 });
 after(async () => { await app?.close(); });
-test('home contains the complete presentation and four tool cards, without legacy app links', async () => {
+test('home preserves the presentation and orders the navigation with Radio immediately after the default page', async () => {
   const result = await app.inject({ method: 'GET', url: '/' });
   assert.equal(result.statusCode, 200);
   assert.match(result.headers['content-type']!, /text\/html/);
   assert.match(result.body, /Back-end Banter/);
   assert.match(result.body, /MongoDB is my flexible friend/);
-  assert.equal((result.body.match(/class="tool-card /g) ?? []).length, 4);
-  assert.doesNotMatch(result.body, /eficienta\.|facturamea\.|Invoice organizer|bulma|vue\.esm/i);
+  assert.deepEqual([...result.body.matchAll(/data-section="([^"]+)"/g)].map(match => match[1]), ['about', 'radio', 'line-length', 'casting-weight', 'rule-of-three']);
+  assert.match(result.body, /data-initial-section="about"/);
+  assert.equal((result.body.match(/<audio /g) ?? []).length, 1);
+  assert.doesNotMatch(result.body, /eficienta\.|facturamea\.|Invoice organizer|bulma|vue\.esm|<dialog|hamburger/i);
 });
 test('partial requests, direct tool links and legacy links resolve correctly', async () => {
   for (const slug of ['line-length', 'casting-weight', 'rule-of-three', 'radio']) {
     const fragment = await app.inject({ method: 'GET', url: `/tools/${slug}`, headers: { 'hx-request': 'true' } });
     assert.equal(fragment.statusCode, 200);
-    assert.match(fragment.body, /id="modal-title"/);
+    assert.ok(fragment.body.includes(`id="title-${slug}"`));
     assert.doesNotMatch(fragment.body, /<!doctype html>/);
     const direct = await app.inject({ method: 'GET', url: `/tools/${slug}` });
     assert.equal(direct.headers.location, `/?tool=${slug}`);
-    assert.equal((await app.inject({ method: 'GET', url: `/?tool=${slug}` })).statusCode, 200);
+    const page = await app.inject({ method: 'GET', url: `/?tool=${slug}` });
+    assert.equal(page.statusCode, 200);
+    assert.ok(page.body.includes(`data-initial-section="${slug}"`));
+    assert.ok(page.body.includes(`id="title-${slug}"`));
   }
   const legacy = await app.inject({ method: 'GET', url: '/hobby/pescuit/lungimeFire' });
   assert.equal(legacy.headers.location, '/?tool=line-length');
   assert.equal((await app.inject({ method: 'GET', url: '/tools/unknown' })).statusCode, 404);
   assert.equal((await app.inject({ method: 'GET', url: '/?tool=unknown' })).statusCode, 404);
+});
+test('CV and contact have directly addressable empty sections', async () => {
+  for (const section of ['cv', 'contact']) {
+    const page = await app.inject({ method: 'GET', url: `/?section=${section}` });
+    assert.equal(page.statusCode, 200);
+    assert.ok(page.body.includes(`data-initial-section="${section}"`));
+    assert.match(page.body, new RegExp(`id="panel-${section}"[^>]*>\\s*<div class="panel-heading">[\\s\\S]*?</div>\\s*</section>`));
+  }
+  assert.equal((await app.inject({ method: 'GET', url: '/?section=missing' })).statusCode, 404);
 });
 test('radio escapes database content, rejects unsafe URLs and offers retry on DB failure', async () => {
   const result = await app.inject({ method: 'GET', url: '/tools/radio', headers: { 'hx-request': 'true' } });

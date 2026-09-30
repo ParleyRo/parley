@@ -1,6 +1,6 @@
 <section class="radio-panel" x-data>
-  <span class="tool-icon modal-tool-icon"><svg class="icon" aria-hidden="true"><use href="#i-radio"/></svg></span><p class="eyebrow">MUZICĂ</p><h2 id="modal-title">Pe frecvența ta<span>.</span></h2><p class="modal-description">Alege un post. Muzica rămâne cu tine și după ce închizi fereastra.</p>
-  <% if (it.failed) { %><div class="empty-state" role="alert"><p>Nu am putut încărca posturile radio.</p><button class="primary-button" hx-get="/tools/radio" hx-target="#tool-content" hx-swap="innerHTML">Reîncearcă</button></div>
+  <div class="panel-heading"><h2 id="title-radio" class="section-title"><span>Radio</span> live</h2><span class="panel-category">MUZICĂ</span></div><div class="tool-body"><p class="panel-description">Pe frecvența ta. Alege un post și lasă muzica să te însoțească.</p>
+  <% if (it.failed) { %><div class="empty-state" role="alert"><p>Nu am putut încărca posturile radio.</p><button class="primary-button" hx-get="/tools/radio" hx-target="#content-radio" hx-swap="innerHTML">Reîncearcă</button></div>
   <% } else if (!it.stations.length) { %><p class="empty-state">Lista de posturi este momentan goală.</p>
   <% } else { %>
   <div class="radio-list"><% for (const station of it.stations) { %>
@@ -9,5 +9,5 @@
     </button>
   <% } %></div>
   <% } %>
-  <p class="radio-note"><span class="status-dot"></span> Redarea continuă în mini-player.</p>
+  <p class="radio-note"><span class="status-dot"></span> Muzica continuă și când schimbi secțiunea.</p></div>
 </section>
