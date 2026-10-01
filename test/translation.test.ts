@@ -19,8 +19,8 @@ test('concurrent and repeated requests share a complete translation', async cont
   const service = new TranslationService(config);
   const [first, concurrent] = await Promise.all([service.translate('ro'), service.translate('ro')]);
   assert.deepEqual(first, concurrent);
-  assert.equal(first.sections.length, 4);
-  assert.equal(first.sections[0].items.length, 4);
+  assert.equal(first.sections.length, presentation.sections.length);
+  assert.deepEqual(first.sections.map(section => section.items.length), presentation.sections.map(section => section.items.length));
   assert.deepEqual(await service.translate('ro'), first);
   assert.equal(send.mock.callCount(), textsOf(presentation).length);
   service.onModuleDestroy();

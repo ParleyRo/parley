@@ -40,9 +40,38 @@
     <main id="main" class="content-card" tabindex="-1">
       <section id="panel-about" class="content-panel" aria-labelledby="about-title" x-show="section === 'about'" <% if (it.initialSection !== 'about') { %>style="display:none"<% } %>>
         <div class="panel-heading"><h2 id="about-title" class="section-title"><span>Despre</span> mine</h2>
-          <form id="language-form" x-data="translation" hx-post="/translate" hx-target="#presentation" hx-swap="innerHTML" hx-trigger="change, submit" hx-sync="this:replace" hx-indicator="#translation-progress"
-            @htmx:before-request="begin($event)" @htmx:after-request="finish($event)" @htmx:after-swap="applied()" @translation-error.window="error = $event.detail.message">
-            <label class="language-control"><svg class="icon" aria-hidden="true"><use href="#i-globe"/></svg><span class="sr-only">Limba prezentării</span><select name="toLanguage" x-model="selected" aria-label="Limba prezentării"><% for (const [code, name] of it.languages) { %><option value="<%= code %>"><%= name %></option><% } %></select></label>
+          <form id="language-form" x-data="translation" hx-post="/translate" hx-target="#presentation" hx-swap="innerHTML" hx-trigger="submit" hx-sync="this:replace" hx-indicator="#translation-progress"
+            :aria-busy="loading" @click.outside="closePicker(false)" @focusout="if (!$el.contains($event.relatedTarget)) closePicker(false)"
+            @keydown.escape.prevent.stop="closePicker()" @htmx:before-request="begin($event)" @htmx:after-request="finish($event)" @htmx:after-swap="applied()" @translation-error.window="error = $event.detail.message">
+            <input type="hidden" name="toLanguage" value="en" :value="selected">
+            <button type="button" class="language-control" x-ref="languageTrigger" aria-label="Limba prezentării: English" :aria-label="'Limba prezentării: ' + selectedName"
+              aria-haspopup="dialog" aria-controls="language-picker" :aria-expanded="pickerOpen" @click="pickerOpen ? closePicker() : showPicker()"
+              @keydown.arrow-down.prevent="showPicker()" @keydown.arrow-up.prevent="showPicker()">
+              <svg class="icon" aria-hidden="true"><use href="#i-globe"/></svg><span x-text="selectedName">English</span>
+              <svg class="icon language-chevron" :class="{ 'is-open': pickerOpen }" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <div id="language-picker" class="language-picker" x-ref="languagePicker" role="dialog" aria-label="Alege limba prezentării" x-cloak x-show="pickerOpen">
+              <div class="language-search">
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg>
+                <input type="search" x-ref="languageSearch" x-model="query" @input="filterOptions()" aria-label="Caută o limbă" placeholder="Caută limba…"
+                  role="combobox" aria-autocomplete="list" aria-controls="language-options" :aria-expanded="pickerOpen" :aria-activedescendant="activeCode ? 'language-option-' + activeCode : null"
+                  autocomplete="off" spellcheck="false" @keydown.arrow-down.prevent="moveActive(1)" @keydown.arrow-up.prevent="moveActive(-1)" @keydown.enter.prevent.stop="selectLanguage(activeCode)">
+              </div>
+              <ul id="language-options" class="language-options" x-ref="languageOptions" role="listbox" aria-label="Limbi disponibile">
+                <% for (const { code, name, searchName } of it.languages) { %>
+                <li role="presentation" x-show="matches('<%= code %>')">
+                  <button type="button" id="language-option-<%= code %>" class="language-option" role="option" tabindex="-1" aria-selected="<%= code === 'en' %>" :aria-selected="selected === '<%= code %>'"
+                    data-language-code="<%= code %>" data-language-name="<%= name %>" data-language-search="<%= searchName %>"
+                    :class="{ 'is-active': activeCode === '<%= code %>' }" @mouseenter="activeCode = '<%= code %>'" @click="selectLanguage('<%= code %>')">
+                    <span class="language-option-label"><span dir="auto"><%= name %></span><small><%= searchName %></small></span>
+                    <span class="language-code"><%= code.toUpperCase() %></span>
+                    <svg class="icon language-check" :class="{ 'is-selected': selected === '<%= code %>' }" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>
+                  </button>
+                </li>
+                <% } %>
+              </ul>
+              <p class="language-empty" x-cloak x-show="filteredOptions.length === 0" role="status">Nicio limbă găsită.</p>
+            </div>
             <span id="translation-progress" class="htmx-indicator translation-progress" role="status">Se traduce…</span>
             <div class="translation-error" x-cloak x-show="error" role="alert"><span x-text="error"></span><button class="text-button" type="submit">Reîncearcă</button></div>
           </form>

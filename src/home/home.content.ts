@@ -8,28 +8,52 @@ export interface Presentation {
   intro: string; sections: { title: string; items: string[]; icon: string }[]; outro: string;
 }
 export const presentation: Presentation = {
-  intro: "Hey there, code aficionados! I'm not just your run-of-the-mill developer; I'm the proud captain of a code spaceship with over a decade of experience navigating the cosmic seas of software development. Buckle up and let's take a joyride through my tech universe:",
+  intro: "I'm a software developer who enjoys understanding how an application fits together: its interface, underlying logic, data, and the infrastructure it runs on.\nI build web applications, integrate services, and automate repetitive tasks. My personal projects often start with a practical need and become opportunities to explore, build, and improve something I use every day.",
   sections: [
-    { title: 'Front-end Fiesta:', icon: 'browser', items: [
-      'HTML is my secret language for talking to web browsers.',
-      'CSS is my artistic palette; I paint masterpieces with style.',
-      "JavaScript? Well, that's my coffee – can't start the day without it!",
-      'Vue.js and React are my dynamic duo, making user interfaces dance to the rhythm of the code.',
-    ] },
-    { title: 'Back-end Banter:', icon: 'code', items: [
-      'PHP is my trusty sidekick, handling server-side shenanigans for over 10 years.',
-      'Laravel is like my code butler, ensuring everything runs smoother than a cat video on the internet.',
-      "Node.js? It's where I tap into my superhero mode, using JavaScript to save the day on the server.",
-    ] },
-    { title: 'Database Dazzle:', icon: 'database', items: [
-      'MySQL is where I play Sherlock, solving mysteries in the world of relational databases.',
-      'MongoDB is my flexible friend, embracing the chaos of non-relational data like a pro.',
-    ] },
-    { title: 'Version Control Virtuoso:', icon: 'branch', items: [
-      'Git is my time machine, keeping track of all the twists and turns in the code saga for over a decade. Think of me as the code historian with a sense of humor.',
-    ] },
+    {
+      title: 'Web applications & interfaces',
+      icon: 'browser',
+      items: [
+        'I build interfaces with JavaScript and TypeScript, choosing tools that suit the project: React/Next.js, server-side templates, or interactions powered by Alpine and HTMX. I value clear, responsive applications and thoughtful attention to usability.',
+      ],
+    },
+    {
+      title: 'Backend & integrations',
+      icon: 'code',
+      items: [
+        'I develop backends in PHP and Node.js, connect services through APIs and webhooks, and work with authentication, payments, and background processing. I care about how the entire workflow behaves, including when things go wrong.',
+      ],
+    },
+    {
+      title: 'Data & real-time communication',
+      icon: 'database',
+      items: [
+        'I work with relational databases, particularly MySQL and PostgreSQL, and with applications that coordinate messages, events, and real-time updates. I pay attention to how data moves between components and stays consistent.',
+      ],
+    },
+    {
+      title: 'Integrations & automation',
+      icon: 'workflow',
+      items: [
+        'I connect applications and services through APIs, webhooks, and notifications, and keep track of how the workflows between them operate.',
+      ],
+    },
+    {
+      title: 'Linux, Docker & infrastructure',
+      icon: 'server',
+      items: [
+        'I manage my own server and the environments my applications run in, including Docker containers, reverse proxies, HTTPS, and supporting services. I use metrics, dashboards, and alerts to monitor their operation.',
+      ],
+    },
+    {
+      title: 'Debugging & maintenance',
+      icon: 'bug',
+      items: [
+        'I investigate issues across the interface, backend, database, and infrastructure. I use Git, tests, and logs to verify changes and improve existing applications.',
+      ],
+    },
   ],
-  outro: "So, if you're looking for a developer who doesn't just code but also brings a dash of wit to the table, you've found your match. Let's create some tech magic together – the fun way!",
+  outro: "I enjoy building useful things, understanding why they work, and making them easier to maintain. My curiosity carries on after work.",
 };
 export function textsOf(content: Presentation): string[] {
   return [content.intro, ...content.sections.flatMap(section => [section.title, ...section.items]), content.outro];
