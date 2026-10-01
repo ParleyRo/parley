@@ -108,10 +108,10 @@
   .formula { display:flex; gap:20px; border-bottom:1px solid var(--line); padding:0 0 17px; font:16px ui-monospace,monospace; margin-bottom:25px; }.formula span { color:#a4af9d; }
   .calculator .checkbox-label { display:flex; align-items:center; gap:8px; margin-top:18px; font-weight:400; }.checkbox-label input { accent-color:var(--green); width:15px; height:15px; }
   .radio-list { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:25px; }
-  .station { display:flex; align-items:center; gap:10px; text-align:left; border:1px solid #e4ebe4; border-radius:4px; background:white; padding:13px 10px; min-width:0; transition:border-color .15s,background .15s; }
+  .station { display:flex; align-items:center; gap:10px; text-align:left; border:1px solid #e4ebe4; border-radius:4px; background:white; padding:4px 6px; min-width:0; transition:border-color .15s,background .15s; }
   .station:hover,.station.active { border-color:#9bc293; background:#f4f9f0; }
   .station:disabled { opacity:.5; cursor:not-allowed; }
-  .station-logo { position:relative; width:36px; height:36px; background:#f0f5ee; border-radius:4px; display:grid; place-items:center; overflow:hidden; flex-shrink:0; font-size:11px; color:var(--green); }
+  .station-logo { position:relative; width:48px; height:48px; background:#f0f5ee; border-radius:4px; display:grid; place-items:center; overflow:hidden; flex-shrink:0; font-size:11px; color:var(--green); }
   .station-logo img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; background:white; padding:3px; }
   .station-name { display:flex; flex-direction:column; min-width:0; }.station-name strong { font-size:10px; font-weight:500; line-height:1.6; }.station-name small { font-size:8px; color:var(--muted); }
   .station-play { margin-left:auto; width:14px; height:14px; color:var(--green); }

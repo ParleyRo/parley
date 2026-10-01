@@ -11,13 +11,14 @@ import { presentation } from '../src/home/home.content.js';
 
 let app: NestFastifyApplication;
 let radioFails = false;
+let stationLogo = 'javascript:alert(1)';
 before(async () => {
   const module = await Test.createTestingModule({ imports: [AppModule] })
     .overrideProvider(ConfigService).useValue({ runtime: {} })
     .overrideProvider(DatabaseService).useValue({ query: async (sql: string) => {
       assert.match(sql, /^SELECT .* FROM radio ORDER BY id ASC$/);
       if (radioFails) throw new Error('Offline');
-      return [{ id: 1, name: '<script>alert(1)</script>', stream: 'https://example.test/radio', logo: 'javascript:alert(1)' }];
+      return [{ id: 1, name: '<script>alert(1)</script>', stream: 'https://example.test/radio', logo: stationLogo }];
     } })
     .overrideProvider(TranslationService).useValue({ translate: async (language: string) => {
       if (language === 'ro') throw new Error('Provider offline');
@@ -76,6 +77,24 @@ test('radio escapes database content, rejects unsafe URLs and offers retry on DB
   radioFails = false;
   assert.match(failure.body, /Nu am putut încărca/);
   assert.match(failure.body, /Reîncearcă/);
+});
+test('radio supports domain-independent image paths while rejecting unsafe or non-image paths', async () => {
+  try {
+    for (const logo of ['/assets/img/radio/europafm.webp', 'https://example.test/logo.png']) {
+      stationLogo = logo;
+      const result = await app.inject({ method: 'GET', url: '/tools/radio', headers: { 'hx-request': 'true' } });
+      assert.equal(result.statusCode, 200);
+      assert.ok(result.body.includes(`src="${logo}"`));
+    }
+    for (const logo of ['//example.test/logo.png', 'javascript:alert(1)', 'data:image/svg+xml,<svg/>', '/assets/img/../../health', '/assets/img/%2e%2e/../health']) {
+      stationLogo = logo;
+      const result = await app.inject({ method: 'GET', url: '/tools/radio', headers: { 'hx-request': 'true' } });
+      assert.equal(result.statusCode, 200);
+      assert.doesNotMatch(result.body, /<img /);
+    }
+  } finally {
+    stationLogo = 'javascript:alert(1)';
+  }
 });
 test('translation returns escaped HTML and signals failures without replacing the presentation', async () => {
   const translated = await app.inject({ method: 'POST', url: '/translate', headers: { 'content-type': 'application/x-www-form-urlencoded' }, payload: 'toLanguage=en' });
