@@ -8,4 +8,4 @@ const app = await NestFactory.create<NestFastifyApplication>(AppModule, new Fast
 }));
 app.useStaticAssets({ root: resolve('public'), prefix: '/assets/' });
 app.enableShutdownHooks();
-await app.listen(Number(process.env.PORT ?? 10000), '0.0.0.0');
+await app.listen(Number(process.env.PORT ?? 10000), process.env.HOST ?? '0.0.0.0');
