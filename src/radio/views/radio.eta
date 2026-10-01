@@ -1,0 +1,13 @@
+<section class="radio-panel" x-data>
+  <div class="panel-heading"><h2 id="title-radio" class="section-title"><span>Radio</span> live</h2><span class="panel-category">MUZICĂ</span></div><div class="tool-body"><p class="panel-description">Pe frecvența ta. Alege un post și lasă muzica să te însoțească.</p>
+  <% if (it.failed) { %><div class="empty-state" role="alert"><p>Nu am putut încărca posturile radio.</p><button class="primary-button" hx-get="/tools/radio" hx-target="#content-radio" hx-swap="innerHTML">Reîncearcă</button></div>
+  <% } else if (!it.stations.length) { %><p class="empty-state">Lista de posturi este momentan goală.</p>
+  <% } else { %>
+  <div class="radio-list"><% for (const station of it.stations) { %>
+    <button class="station" type="button" data-id="<%= station.id %>" data-name="<%= station.name %>" data-stream="<%= station.stream %>" @click="$store.radio.choose($el.dataset)" :class="{ active: $store.radio.station?.id === $el.dataset.id }" :aria-pressed="$store.radio.station?.id === $el.dataset.id" <%= !station.stream ? 'disabled' : '' %>>
+      <span class="station-logo"><span><%= station.name.slice(0, 2).toUpperCase() %></span><% if (station.logo) { %><img src="<%= station.logo %>" alt="" loading="lazy" referrerpolicy="no-referrer" @error="$el.remove()"><% } %></span><span class="station-name"><strong><%= station.name %></strong><small x-text="$store.radio.station?.id === $el.closest('button').dataset.id && $store.radio.playing ? 'Acum se aude' : 'Radio live'"></small></span><svg class="icon station-play" aria-hidden="true"><use :href="$store.radio.station?.id === $el.closest('button').dataset.id && $store.radio.playing ? '#i-pause' : '#i-play'"/></svg>
+    </button>
+  <% } %></div>
+  <% } %>
+  <p class="radio-note"><span class="status-dot"></span> Muzica continuă și când schimbi secțiunea.</p></div>
+</section>

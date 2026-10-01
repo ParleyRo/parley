@@ -1,0 +1,10 @@
+<div class="presentation-fragment" data-language="<%= it.language %>" lang="<%= it.language %>" dir="<%= it.language === 'ar' ? 'rtl' : 'ltr' %>">
+  <div class="intro-copy"><p><%= it.content.intro %></p></div>
+  <div class="skills-heading"><h3 class="section-title"><span>Cod &amp;</span> curiozitate</h3><span class="small-mono" aria-hidden="true">&lt;skills /&gt;</span></div>
+  <div class="skills-grid">
+    <% it.content.sections.forEach((section) => { %>
+    <section class="skill-card"><span class="skill-icon"><svg class="icon" aria-hidden="true"><use href="#i-<%= section.icon %>"/></svg></span><h4><%= section.title %></h4><ul><% for (const item of section.items) { %><li><%= item %></li><% } %></ul></section>
+    <% }); %>
+  </div>
+  <p class="about-outro"><%= it.content.outro %></p>
+</div>
