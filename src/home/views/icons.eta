@@ -10,6 +10,9 @@
   <symbol id="i-code" viewBox="0 0 24 24"><path d="m7 6-6 6 6 6m10-12 6 6-6 6M14 3l-4 18"/></symbol>
   <symbol id="i-database" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 4 16 4 16 0V5M4 12c0 4 16 4 16 0"/></symbol>
   <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="19" r="3"/><path d="M6 8v8m12-7c0 7-12 2-12 7"/></symbol>
+  <symbol id="i-workflow" viewBox="0 0 24 24"><rect x="3" y="3" width="6" height="6" rx="1.5"/><rect x="15" y="3" width="6" height="6" rx="1.5"/><rect x="15" y="15" width="6" height="6" rx="1.5"/><path d="M9 6h6M6 9v6a3 3 0 0 0 3 3h6"/></symbol>
+  <symbol id="i-server" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="7" rx="2"/><rect x="3" y="14" width="18" height="7" rx="2"/><path d="M7 6.5h.01M7 17.5h.01M11 6.5h6M11 17.5h6M7 10v4m10-4v4"/></symbol>
+  <symbol id="i-bug" viewBox="0 0 24 24"><path d="M9 7V6a3 3 0 0 1 6 0v1M9 3 7 1m8 2 2-2M8 7h8a1 1 0 0 1 1 1v8a5 5 0 0 1-10 0V8a1 1 0 0 1 1-1Z M12 11v10M7 10H5L3 8m4 6H2m5 4H5l-2 3m14-11h2l2-2m-4 6h5m-5 4h2l2 3"/></symbol>
   <symbol id="i-reel" viewBox="0 0 24 24"><circle cx="10" cy="11" r="7"/><circle cx="10" cy="11" r="3"/><path d="M17 11h3v8h-5M7 21h9M10 18v3M7 3l-2-2"/></symbol>
   <symbol id="i-rod" viewBox="0 0 24 24"><path d="m3 21 12-18m-9 14 3 2M15 3c6 0 6 4 6 8v6a3 3 0 0 1-6 0v-2"/><path d="m15 15 2 2"/></symbol>
   <symbol id="i-math" viewBox="0 0 24 24"><path d="M3 7h8M7 3v8m8-6 6 6m0-6-6 6M3 18h8m4-2h7m-7 4h7"/></symbol>

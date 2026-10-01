@@ -87,12 +87,64 @@ Alpine.data('calculator', (slug: string) => ({
   },
 }));
 
+interface LanguageOption { code: string; name: string; searchName: string }
+const normalizeLanguage = (value: string) => value.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase().trim();
+
 Alpine.data('translation', () => ({
-  selected: 'en', error: '', request: null as XMLHttpRequest | null,
-  begin(event: Event) { this.request = detailOf(event).xhr; this.error = ''; },
+  selected: 'en', error: '', loading: false, request: null as XMLHttpRequest | null,
+  pickerOpen: false, query: '', activeCode: '', options: [] as LanguageOption[],
+  init() {
+    this.options = Array.from(this.$refs.languageOptions.querySelectorAll<HTMLElement>('[data-language-code]'), option => ({
+      code: option.dataset.languageCode!, name: option.dataset.languageName!, searchName: option.dataset.languageSearch!,
+    }));
+  },
+  get selectedName(): string { return this.options.find(option => option.code === this.selected)?.name ?? 'English'; },
+  get filteredOptions(): LanguageOption[] {
+    const query = normalizeLanguage(this.query);
+    return this.options.filter(option => normalizeLanguage(`${option.name} ${option.searchName} ${option.code}`).includes(query));
+  },
+  matches(code: string) { return this.filteredOptions.some(option => option.code === code); },
+  showPicker() {
+    this.query = '';
+    this.activeCode = this.selected;
+    this.pickerOpen = true;
+    this.$nextTick(() => {
+      this.$refs.languagePicker.scrollIntoView({ block: 'nearest' });
+      this.$refs.languageSearch.focus({ preventScroll: true });
+      this.scrollActive();
+    });
+  },
+  closePicker(restoreFocus = true) {
+    if (!this.pickerOpen) return;
+    this.pickerOpen = false;
+    if (restoreFocus) this.$refs.languageTrigger.focus();
+  },
+  filterOptions() {
+    this.activeCode = this.filteredOptions[0]?.code ?? '';
+    this.$nextTick(() => this.scrollActive());
+  },
+  moveActive(direction: number) {
+    const options = this.filteredOptions;
+    if (!options.length) return;
+    const current = options.findIndex(option => option.code === this.activeCode);
+    this.activeCode = options[Math.max(0, Math.min(options.length - 1, current + direction))].code;
+    this.scrollActive();
+  },
+  scrollActive() {
+    document.getElementById(`language-option-${this.activeCode}`)?.scrollIntoView({ block: 'nearest' });
+  },
+  selectLanguage(code: string) {
+    if (!this.options.some(option => option.code === code)) return;
+    const needsTranslation = code !== this.selected || Boolean(this.error);
+    this.selected = code;
+    this.closePicker();
+    if (needsTranslation) this.$nextTick(() => (this.$root as HTMLFormElement).requestSubmit());
+  },
+  begin(event: Event) { this.request = detailOf(event).xhr; this.error = ''; this.loading = true; },
   finish(event: Event) {
     const detail = detailOf(event);
     if (detail.xhr !== this.request) return;
+    this.loading = false;
     if (!detail.successful && !this.error) this.error = 'Traducerea nu este disponibilă momentan. Încearcă din nou.';
   },
   applied() { this.error = ''; },
@@ -145,7 +197,7 @@ document.addEventListener('htmx:beforeSwap', event => {
   const detail = detailOf(event);
   if (detail.target.id === 'presentation') {
     const returnedLanguage = /data-language="([a-z]+)"/.exec(detail.xhr.responseText)?.[1];
-    const selected = document.querySelector<HTMLSelectElement>('[name="toLanguage"]')?.value;
+    const selected = document.querySelector<HTMLInputElement>('[name="toLanguage"]')?.value;
     if (returnedLanguage !== selected) detail.shouldSwap = false;
   }
 });

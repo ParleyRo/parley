@@ -7,7 +7,7 @@ import { AppModule } from '../src/app.module.js';
 import { ConfigService } from '../src/core/config.service.js';
 import { DatabaseService } from '../src/core/database.service.js';
 import { TranslationService } from '../src/translation/translation.service.js';
-import { presentation } from '../src/home/home.content.js';
+import { languages, presentation } from '../src/home/home.content.js';
 
 let app: NestFastifyApplication;
 let radioFails = false;
@@ -34,8 +34,11 @@ test('home preserves the presentation and orders the navigation with Radio immed
   const result = await app.inject({ method: 'GET', url: '/' });
   assert.equal(result.statusCode, 200);
   assert.match(result.headers['content-type']!, /text\/html/);
-  assert.match(result.body, /Back-end Banter/);
-  assert.match(result.body, /MongoDB is my flexible friend/);
+  assert.match(result.body, /Backend &amp; integrations/);
+  assert.match(result.body, /MySQL and PostgreSQL/);
+  assert.match(result.body, /type="hidden" name="toLanguage" value="en"/);
+  assert.match(result.body, /role="combobox" aria-autocomplete="list" aria-controls="language-options"/);
+  assert.deepEqual([...result.body.matchAll(/data-language-code="([^"]+)"/g)].map(match => match[1]), languages.map(([code]) => code));
   assert.deepEqual([...result.body.matchAll(/data-section="([^"]+)"/g)].map(match => match[1]), ['about', 'radio', 'line-length', 'casting-weight', 'rule-of-three']);
   assert.match(result.body, /data-initial-section="about"/);
   assert.equal((result.body.match(/<audio /g) ?? []).length, 1);

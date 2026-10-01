@@ -4,6 +4,7 @@ import { ViewsService } from '../core/views.service.js';
 import { languages, presentation } from './home.content.js';
 import { tools, findTool } from '../tools/tools.catalog.js';
 import { ToolsService } from '../tools/tools.service.js';
+const languageNames = new Intl.DisplayNames(['ro'], { type: 'language' });
 @Controller()
 export class HomeController {
   constructor(private readonly views: ViewsService, private readonly utilities: ToolsService) {}
@@ -13,7 +14,9 @@ export class HomeController {
     if (slug !== undefined && !findTool(slug)) throw new NotFoundException('Utilitar inexistent.');
     if (section !== undefined && !['about', 'cv', 'contact'].includes(section)) throw new NotFoundException('Secțiune inexistentă.');
     return this.views.render('home/views/index', {
-      content: presentation, language: 'en', languages, tools, assets: this.views.assets(),
+      content: presentation, language: 'en',
+      languages: languages.map(([code, name]) => ({ code, name, searchName: languageNames.of(code) ?? name })),
+      tools, assets: this.views.assets(),
       initialSection: slug ?? section ?? 'about', initialContent: slug ? await this.utilities.render(slug) : '',
     });
   }
