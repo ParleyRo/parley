@@ -7,6 +7,7 @@
   <meta name="theme-color" content="#65ada0">
   <title>Parley — Cristian Pirloaga</title>
   <link rel="icon" href="/assets/img/favicon.ico">
+  <link rel="manifest" href="/assets/manifest.webmanifest">
   <% for (const stylesheet of it.assets.styles) { %><link rel="stylesheet" href="<%= stylesheet %>"><% } %>
   <script type="module" src="<%= it.assets.script %>"></script>
 </head>
